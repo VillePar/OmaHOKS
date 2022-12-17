@@ -1,0 +1,11 @@
+.draggableStyle {
+    background-color: lightgreen;
+    height: 30px;
+    margin: 5px;
+    text-align: center;
+    font-size: x-small;
+    width: 92%;
+    border: 2px;
+    border-color: black;
+
+}
