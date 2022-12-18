@@ -9,3 +9,15 @@
     border-color: black;
 
 }
+
+ .studiesList {
+    overflow-y: scroll;
+    
+    border: 1px;
+    border-color: black;
+    width: 18%;
+    position: absolute;
+    margin-top: 100;
+    margin-left: 2;
+    margin-bottom: 2;
+ }
