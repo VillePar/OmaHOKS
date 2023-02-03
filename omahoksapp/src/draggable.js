@@ -1,6 +1,6 @@
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-const StudiesToDrag = ({list1, list2, list3, list4, list5, onDragEnd}) => {
+const StudiesToDrag = ({list, onDragEnd}) => {
   
   return (
     
@@ -10,7 +10,7 @@ const StudiesToDrag = ({list1, list2, list3, list4, list5, onDragEnd}) => {
       <Droppable droppableId='list'>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list1.map((osa, index) => (
+            {list[0].map((osa, index) => (
               <Draggable key={osa.id} draggableId={osa.id.toString()} index={index} >
                 {(provided) => (
                   <div 
@@ -34,7 +34,7 @@ const StudiesToDrag = ({list1, list2, list3, list4, list5, onDragEnd}) => {
       <Droppable droppableId='list1'>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list2.map((osa, index) => (
+            {list[1].map((osa, index) => (
               <Draggable key={osa.id} draggableId={osa.id.toString()} index={index} >
                 {(provided) => (
                   <div 
@@ -58,7 +58,7 @@ const StudiesToDrag = ({list1, list2, list3, list4, list5, onDragEnd}) => {
       <Droppable droppableId='list2'>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list3.map((osa) => {
+            {list[2].map((osa) => {
               
               return(
                 osa.to_children.map((yto, index) => (
@@ -89,7 +89,7 @@ const StudiesToDrag = ({list1, list2, list3, list4, list5, onDragEnd}) => {
       <Droppable droppableId='list2'>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list4.map((osa) => {
+            {list[3].map((osa) => {
               
               return(
                 osa.to_children.map((yto, index) => (
@@ -120,7 +120,7 @@ const StudiesToDrag = ({list1, list2, list3, list4, list5, onDragEnd}) => {
       <Droppable droppableId='list2'>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list5.map((osa) => {
+            {list[4].map((osa) => {
               
               return(
                 osa.to_children.map((yto, index) => (
