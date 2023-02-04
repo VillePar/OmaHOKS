@@ -6,6 +6,11 @@ import './styles.css'
 import uuid from 'react-uuid'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+const sum = (props) => {
+  return(
+    props.reduce((acc, currentValue) => acc + currentValue.points, 0)
+  )
+}
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -66,22 +71,28 @@ const OmaHoks = () => {
       setPeriods({
         ['opinnot']: {
           name: "Tutkinnon osat",
-          items: response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1) 
+          items: response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1), 
+          
         },
         [uuid()]: {
           name: "Syksy I",
-          items: []
+          teksti: 'Opintopisteet jaksolla',
+          items: [],
+          
         },
         [uuid()]: {
           name: "Syksy II",
+          teksti: 'Opintopisteet jaksolla',
           items: []
         },
         [uuid()]: {
           name: "Kevät III",
+          teksti: 'Opintopisteet jaksolla',
           items: []
         },
         [uuid()]: {
           name: "Kevät IV",
+          teksti: 'Opintopisteet jaksolla',
           items: []
         }
       })
@@ -121,7 +132,7 @@ const OmaHoks = () => {
               }}
               key={columnId}
             >
-              <h2 style={{fontSize: '12px', marginTop: 1}}>{column.name}</h2>
+              <h2 style={{fontSize: '12px', marginTop: 1}}>{column.name}<br/>{column.teksti} {sum(column.items)} op</h2>
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
