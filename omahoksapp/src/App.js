@@ -1,10 +1,15 @@
 import React, { useEffect, useState, useRef} from 'react';
 import axios from 'axios';
-import StudiesToDrag from './draggable';
 import MainLogo from './omaLogo';
 import './styles.css'
-import uuid from 'react-uuid'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+const periodsHeader = (props) => {
+  if (props.name !== "Tutkinnon osat") {
+    return <h2 style={{fontSize: '9px'}}>{props.name}<br/>Periodin opintopisteet {props.teksti} {sum(props.items)} op</h2>
+  }
+  return <h2 style={{fontSize: '13px'}}>{props.name}</h2>
+}
 
 const sum = (props) => {
   return(
@@ -56,7 +61,7 @@ const OmaHoks = () => {
   const [viestiJaVuorov, setViestiJaVuorov] = useState([])
   const [matem, setMatem] = useState([])
   const [yhteisK, setYhteisK] = useState([])
-  const [periods, setPeriods] = useState([])
+  const [periods, setPeriods] = useState({})
   const ytoID = [3708881, 3708883, 3708884]
   
   const apiCall = async () => {
@@ -69,30 +74,30 @@ const OmaHoks = () => {
       setMatem(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708883))
       setYhteisK(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708884))
       setPeriods({
-        ['opinnot']: {
+        opinnot: {
           name: "Tutkinnon osat",
           items: response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1), 
           
         },
-        [uuid()]: {
+        syksyI: {
           name: "Syksy I",
-          teksti: 'Opintopisteet jaksolla',
           items: [],
           
         },
-        [uuid()]: {
+        syksyII: {
           name: "Syksy II",
-          teksti: 'Opintopisteet jaksolla',
           items: []
         },
-        [uuid()]: {
+        kevätIII: {
           name: "Kevät III",
-          teksti: 'Opintopisteet jaksolla',
           items: []
         },
-        [uuid()]: {
+        kevätIV: {
           name: "Kevät IV",
-          teksti: 'Opintopisteet jaksolla',
+          items: []
+        },
+        kesäV: {
+          name: "Kesä V",
           items: []
         }
       })
@@ -107,15 +112,11 @@ const OmaHoks = () => {
     apiCall()
   },[])
   
-  
-  console.log(pakollisetA)
-  console.log(viestiJaVuorov)
 
-  
+    
   return(
     <div style={{display: 'flex', overflow: 'hidden'}}>
-      
-      <MainLogo tutkinto={tutkinto?.name}/>
+      <MainLogo tutkinto={tutkinto?.name} allPoints={periods} fromTotal={tutkinto?.total_points}/>
       
       <DragDropContext
         onDragEnd={result => onDragEnd(result, periods, setPeriods)}
@@ -127,12 +128,11 @@ const OmaHoks = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                marginTop: '8%'
-                
+                marginTop: '8%',
               }}
               key={columnId}
             >
-              <h2 style={{fontSize: '12px', marginTop: 1}}>{column.name}<br/>{column.teksti} {sum(column.items)} op</h2>
+              {periodsHeader(column)}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -147,9 +147,10 @@ const OmaHoks = () => {
                           alignItems: 'center',
                           overflowY: 'scroll',
                           overflowX: 'hidden',
-                          boxShadow: '1px 2px 9px #000000',
-                          width: '150px',
+                          boxShadow: '0.5px 1px 5px #000000',
+                          width: '130px',
                           height: '250px',
+                          marginInline: '-5px'
                         }}
                       >
                         {column.items?.map((item, index) => {
