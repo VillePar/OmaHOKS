@@ -3,80 +3,37 @@ import axios from 'axios';
 import MainLogo from './omaLogo';
 import './styles.css'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-const periodsHeader = (props) => {
-  if (props.name !== "Tutkinnon osat") {
-    return <h2 style={{fontSize: '9px'}}>{props.name}<br/>Periodin opintopisteet {props.teksti} {sum(props.items)} op</h2>
-  }
-  return <h2 style={{fontSize: '13px'}}>{props.name}</h2>
-}
-
-const sum = (props) => {
-  return(
-    props.reduce((acc, currentValue) => acc + currentValue.points, 0)
-  )
-}
-
-const onDragEnd = (result, columns, setColumns) => {
-  if (!result.destination) return;
-  const { source, destination } = result;
-
-  if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
-    const [removed] = sourceItems.splice(source.index, 1);
-    destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems
-      }
-    });
-  } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
-    const [removed] = copiedItems.splice(source.index, 1);
-    copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems
-      }
-    });
-  }
-};
+import StudiesToDrag from './draggable';
 
 const OmaHoks = () => {
-  const [tutkinto, setTutkinto] = useState([]);
-  const [pakollisetA, setPakollisetA] = useState([])  
-  const [valinnaisetA, setValinnaisetA] = useState([])
+  // for now, these variabales are not in use. 
+  {/*
   const [viestiJaVuorov, setViestiJaVuorov] = useState([])
-  const [matem, setMatem] = useState([])
-  const [yhteisK, setYhteisK] = useState([])
-  const [periods, setPeriods] = useState({})
-  const ytoID = [3708881, 3708883, 3708884]
+  const [matem, setMatem] = useState()
+  const [yhteisK, setYhteisK] = useState([])*/ }
+
+const [tutkinto, setTutkinto] = useState([]);
+  // periods is the main object that we are going to iterate
+const [periods, setPeriods] = useState({})
+
+  // for now there is no use for ytoID
+const ytoID = [3708881, 3708883, 3708884]
   
+  // In apicall we use axios-library to get the 
   const apiCall = async () => {
     try {
       const response = await axios.get('/liiketoimintaData.json');
-      setTutkinto(response.data.tutkinto)
-      setPakollisetA(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && ytoID.indexOf(osa.id) === -1))
-      setValinnaisetA(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => !osa.required ))
-      setViestiJaVuorov(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708881))
+      
+      // for now these setStates are not in use.
+      {/*setViestiJaVuorov(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708881))
       setMatem(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708883))
-      setYhteisK(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708884))
+    setYhteisK(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708884))*/}
+
+      setTutkinto(response.data.tutkinto)
       setPeriods({
         opinnot: {
           name: "Tutkinnon osat",
-          items: response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1), 
+          items: response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1)
           
         },
         syksyI: {
@@ -100,6 +57,50 @@ const OmaHoks = () => {
           name: "Kesä V",
           items: []
         }
+        ,
+        syksyI2: {
+          name: "Syksy I/II",
+          items: [],
+          
+        },
+        syksyII2: {
+          name: "Syksy II/II",
+          items: []
+        },
+        kevätIII2: {
+          name: "Kevät III/II",
+          items: []
+        },
+        kevätIV2: {
+          name: "Kevät IV/II",
+          items: []
+        },
+        kesäV2: {
+          name: "Kesä V/II",
+          items: []
+        }
+        ,
+        syksyI3: {
+          name: "Syksy I/III",
+          items: [],
+          
+        },
+        syksyII3: {
+          name: "Syksy II/III",
+          items: []
+        },
+        kevätIII3: {
+          name: "Kevät III/III",
+          items: []
+        },
+        kevätIV3: {
+          name: "Kevät IV/III",
+          items: []
+        },
+        kesäV3: {
+          name: "Kesä V/III",
+          items: []
+        }
       })
       } catch (error) {
       if (error.response){
@@ -112,106 +113,12 @@ const OmaHoks = () => {
     apiCall()
   },[])
   
-
-    
   return(
-    <div style={{display: 'flex', overflow: 'hidden'}}>
+    <div style={{display: 'flex', boxSizing: 'border-box'}}>
       <MainLogo tutkinto={tutkinto?.name} allPoints={periods} fromTotal={tutkinto?.total_points}/>
+      <StudiesToDrag periods={periods} setPeriods={setPeriods}/>
       
-      <DragDropContext
-        onDragEnd={result => onDragEnd(result, periods, setPeriods)}
-      >
-        {Object.entries(periods).map(([columnId, column], index) => {
-          return (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginTop: '8%',
-              }}
-              key={columnId}
-            >
-              {periodsHeader(column)}
-              <div style={{ margin: 8 }}>
-                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
-                  {(provided, snapshot) => {
-                    return (
-                      <div 
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "#666666"
-                            : "#F2F2F2",
-                          alignItems: 'center',
-                          overflowY: 'scroll',
-                          overflowX: 'hidden',
-                          boxShadow: '0.5px 1px 5px #000000',
-                          width: '130px',
-                          height: '250px',
-                          marginInline: '-5px'
-                        }}
-                      >
-                        {column.items?.map((item, index) => {
-                          return (
-                            <Draggable
-                              key={item.id}
-                              draggableId={item.id.toString()}
-                              index={index}
-                            >
-                              {(provided, snapshot) => {
-                                return (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={item.required ? {
-                                      height: '40px',
-                                      textAlign: 'center',
-                                      marginLeft: '2%',
-                                      width: '96%',
-                                      marginTop: '3px',
-                                      fontSize: '11px',
-                                      border: '0.2px solid #989898',
-                                      backgroundColor: snapshot.isDragging
-                                        ? "#6EE8FF"
-                                        : "#4D97E2",
-                                      color: "white",
-                                      ...provided.draggableProps.style
-                                    }:{ height: '40px',
-                                    textAlign: 'center',
-                                    marginLeft: '2%',
-                                    width: '96%',
-                                    marginTop: '3px',
-                                    fontSize: '11px',
-                                    border: '0.2px solid #989898',
-                                    backgroundColor: snapshot.isDragging
-                                      ? "#47FF78"
-                                      : "#CCFFCC",
-                                    color: "#5A5656",
-                                    ...provided.draggableProps.style}}
-                                  >
-                                    {item.name} {item.points} op
-                                  </div>
-                                );
-                              }}
-                            </Draggable>
-                          );
-                        })}
-                        {provided.placeholder}
-                      </div>
-                    );
-                  }}
-                </Droppable>
-              </div>
-            </div>
-          );
-        })}
-      </DragDropContext>
-      
-      
-      </div>
+    </div>
   )
 }
  

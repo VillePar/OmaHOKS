@@ -1,0 +1,109 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+  margin: 1;
+  padding: 0;
+}
+
+body {
+  background: #fff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 120px;
+  height: fit-content;
+  background: #f1f1f1;
+  margin-top: 50px;
+  word-break: break-all;
+  border: 1px solid rgba(87, 84, 84, 0.274);
+}
+
+.bloc-tabs {
+  display: block;
+}
+.tabs {
+  text-align: center;
+  width: 100%;
+  background: rgba(255, 247, 247, 0.075);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.274);
+  box-sizing: content-box;
+  position:relative;
+  outline: none;
+}
+.tabs:not(:last-child){
+  border-right: 1px solid rgba(0, 0, 0, 0.274);
+}
+
+.active-tabs  {
+  color: #2a2a2a;
+  font-size: large;
+  background: white;
+  border-bottom: -0px solid transparent;
+}
+
+.active-tabs::before {
+  content: "";
+  display: block;
+  position: relative;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% + 2px);
+  height: 5px;
+  background: rgb(88, 147, 241);
+}
+
+
+
+button {
+  border: none;
+  
+}
+.content-tabs {
+  flex-grow : 1;
+}
+.content {
+  background: white;
+  padding: 20px;
+  width: fit-content;
+  height: fit-content;
+  display: none;
+  margin-left: -100px;
+  
+}
+.content h2 {
+  padding: 0px 0 5px 0px;
+}
+.content hr {
+  width: 100px;
+  height: 2px;
+  background: #222;
+  margin-bottom: 5px;
+}
+.content p {
+  width: 100%;
+  height: 100%;
+}
+.active-content {
+  display: flex;
+  position: absolute;
+  margin-left: 0px;
+}
+.active-content2 {
+  display: flex;
+  position: absolute;
+  margin-left: -120px;
+}
+.active-content3 {
+  display: flex;
+  position: absolute;
+  margin-left: -240px;
+}
+.active-content4 {
+  display: flex;
+  position: absolute;
+  margin-left: -360px;
+}

@@ -1,152 +1,607 @@
+import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import "./TabStyle.css"
 
-const StudiesToDrag = ({list, onDragEnd}) => {
-  
+
+//onDragEnd function is essentila for defining what happens to the draggable object when
+// it is dropped in droppable area
+const onDragEnd = (result, columns, setColumns) => {
+  if (!result.destination) return;
+  const { source, destination } = result;
+
+  if (source.droppableId !== destination.droppableId) {
+    const sourceColumn = columns[source.droppableId];
+    const destColumn = columns[destination.droppableId];
+    const sourceItems = [...sourceColumn.items];
+    const destItems = [...destColumn.items];
+    const [removed] = sourceItems.splice(source.index, 1);
+    destItems.splice(destination.index, 0, removed);
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...sourceColumn,
+        items: sourceItems
+      },
+      [destination.droppableId]: {
+        ...destColumn,
+        items: destItems
+      }
+    });
+  } else {
+    const column = columns[source.droppableId];
+    const copiedItems = [...column.items];
+    const [removed] = copiedItems.splice(source.index, 1);
+    copiedItems.splice(destination.index, 0, removed);
+    setColumns({
+      ...columns,
+      [source.droppableId]: {
+        ...column,
+        items: copiedItems
+      }
+    });
+  }
+};
+
+
+// function to update the amount of points in one period when study is dropped in to the said period
+const sum = (props) => {
+  return(
+    props.reduce((acc, currentValue) => acc + currentValue.points, 0)
+  )
+}
+
+let vuosi1 = ["Syksy I", "Syksy II", "Kevät III", "Kevät IV"]
+let vuosi2 = ["Syksy I/II", "Syksy II/II", "Kevät III/II", "Kevät IV/II"]
+let vuosi3 = ["Syksy I/III", "Syksy II/III", "Kevät III/III", "Kevät IV/III"]
+let kesa = ["Kesä V", "Kesä V/II", "Kesä V/III"]
+
+const StudiesToDrag = ({periods, setPeriods}) => {
+  const [toggleState, setToggleState] = useState(1)
+
+const toggleTab = (index) => {
+  setToggleState(index)
+}
+
   return (
-    
-  <div style={{overflowY:'scroll', overflowX: 'hidden', border: '2px solid black',width: '18%' ,position: 'absolute', top: 100, bottom: 2, left: 2 }}>
-    <h6 style={{textAlign: 'center', marginTop: 0, marginBottom: 0 }}>Ammatilliset pakolliset 55 op</h6>
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='list'>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list[0].map((osa, index) => (
-              <Draggable key={osa.id} draggableId={osa.id.toString()} index={index} >
-                {(provided) => (
-                  <div 
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}>
-                  <div style={{width: '90%', height: '40px', backgroundColor: 'lightblue', margin:'5px', textAlign:'center', fontSize:'11px', border: '1px solid black'}}>
-                  {osa.name} {osa.points} op
-                  </div>
-            </div>
-              )}
-              </Draggable>
-            ))}
-        {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-      <h6 style={{textAlign: 'center', marginTop: 0, marginBottom: 0 }}>Ammatilliset valinnaiset 90 op</h6>
-    </DragDropContext>
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='list1'>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list[1].map((osa, index) => (
-              <Draggable key={osa.id} draggableId={osa.id.toString()} index={index} >
-                {(provided) => (
-                  <div 
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}>
-                  <div style={{width: '90%', height: '40px', backgroundColor: 'lightGreen', margin:'5px', textAlign:'center', fontSize:'11px', border: '1px solid black'}}>
-                  {osa.name} {osa.points} op
-                  </div>
-            </div>
-              )}
-              </Draggable>
-            ))}
-        {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    <h6 style={{textAlign: 'center', marginTop: 0, marginBottom: 0 }}>Viestintä- ja vuorovaikutusosaaminen 11 op</h6>
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='list2'>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list[2].map((osa) => {
-              
-              return(
-                osa.to_children.map((yto, index) => (
-                  <Draggable key={yto.id} draggableId={yto.id.toString()} index={index} >
-                {(provided) => (
-                  <div 
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}>
-                  <div style={{width: '90%', height: '40px', backgroundColor: 'lightYellow', margin:'5px', textAlign:'center', fontSize:'11px', border: '1px solid black'}}>
-                  {yto.name} {yto.points} op
-                  </div>
-            </div>
-              )}
-              </Draggable>
+    <DragDropContext
+        onDragEnd={result => onDragEnd(result, periods, setPeriods)}
+      >
 
-                ))
-              )
-            }
-          )}
-        {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    <h6 style={{textAlign: 'center', marginTop: 0, marginBottom: 0 }}>Matemaattis-luonnontieteellinen osaaminen 6 op</h6>
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='list2'>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list[3].map((osa) => {
+        {Object.entries(periods).map(([columnId, column], index) => 
+        { if(column.name === "Tutkinnon osat")
+        
+          return (
+            
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginTop: '50px',
+                backgroundColor: '#E0E0E0',
+                border: '1px solid lightGrey',
+                height: 'fit-content'
+              }}
+              key={columnId}
               
-              return(
-                osa.to_children.map((yto, index) => (
-                  <Draggable key={yto.id} draggableId={yto.id.toString()} index={index} >
-                {(provided) => (
-                  <div 
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}>
-                  <div style={{width: '90%', height: '40px', backgroundColor: 'lightYellow', margin:'5px', textAlign:'center', fontSize:'11px', border: '1px solid black'}}>
-                  {yto.name} {yto.points} op
-                  </div>
+            >
+              {<h2 style={{fontSize: '13px'}}>{column.name}</h2>}
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#666666"
+                            : "#F2F2F2",
+                          alignItems: 'center',
+                          overflowY: 'scroll',
+                          overflowX: 'hidden',
+                          boxShadow: '0.5px 1px 5px #000000',
+                          width: '130px',
+                          height: '270px',
+                          marginInline: '-5px'
+                        }}
+                      >
+                        {column.items?.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={item.required ? {
+                                      height: '40px',
+                                      textAlign: 'center',
+                                      marginLeft: '2%',
+                                      width: '96%',
+                                      marginTop: '3px',
+                                      fontSize: '11px',
+                                      border: '0.2px solid #989898',
+                                      backgroundColor: snapshot.isDragging
+                                        ? "#6EE8FF"
+                                        : "#4D97E2",
+                                      color: "white",
+                                      ...provided.draggableProps.style
+                                    }:{ height: '40px',
+                                    textAlign: 'center',
+                                    marginLeft: '2%',
+                                    width: '96%',
+                                    marginTop: '3px',
+                                    fontSize: '11px',
+                                    border: '0.2px solid #989898',
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#47FF78"
+                                      : "#CCFFCC",
+                                    color: "#5A5656",
+                                    ...provided.draggableProps.style}}
+                                  >
+                                    {item.name} {item.points} op
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
             </div>
-              )}
-              </Draggable>
-
-                ))
-              )
-            }
-          )}
-        {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    <h6 style={{textAlign: 'center', marginTop: 0, marginBottom: 0 }}>Yhteiskunta- ja työelämäosaaminen 9 op</h6>
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='list2'>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps} >
-            {list[4].map((osa) => {
+          );
+        })}
+        <div className='container'>
+          <div className='bloc-tabs'>
+            < button
+            className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
+            onClick={() => toggleTab(1)}
+            
+            >
+              Lukuvuosi I
+            </button>
+          <div className='content-tabs'>
+            <div
+              className={toggleState === 1 ? "content active-content" : "content"}
+            >
               
-              return(
-                osa.to_children.map((yto, index) => (
-                  <Draggable key={yto.id} draggableId={yto.id.toString()} index={index} >
-                {(provided) => (
-                  <div 
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}>
-                  <div style={{width: '90%', height: '40px', backgroundColor: 'lightYellow', margin:'5px', textAlign:'center', fontSize:'11px', border: '1px solid black'}}>
-                  {yto.name} {yto.points} op
-                  </div>
+        {Object.entries(periods).map(([columnId, column], index) => 
+        { if(vuosi1.indexOf(column.name) > -1)
+          return (
+            
+            <div
+              style={{
+                display: 'block',
+                flexDirection: "column",
+                position: 'relative',
+                alignItems: "center",
+                marginTop: '-20px',
+                
+              }}
+              key={columnId}
+              
+            >
+              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#666666"
+                            : "#F2F2F2",
+                          alignItems: 'center',
+                          overflowY: 'scroll',
+                          overflowX: 'hidden',
+                          boxShadow: '0.5px 1px 5px #000000',
+                          width: '130px',
+                          height: '250px',
+                          marginInline: '-5px',
+                          marginTop: '-5px'
+                        }}
+                      >
+                        {column.items?.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={item.required ? {
+                                      height: '40px',
+                                      textAlign: 'center',
+                                      marginLeft: '2%',
+                                      width: '96%',
+                                      marginTop: '3px',
+                                      fontSize: '11px',
+                                      border: '0.2px solid #989898',
+                                      backgroundColor: snapshot.isDragging
+                                        ? "#6EE8FF"
+                                        : "#4D97E2",
+                                      color: "white",
+                                      ...provided.draggableProps.style
+                                    }:{ height: '40px',
+                                    textAlign: 'center',
+                                    marginLeft: '2%',
+                                    width: '96%',
+                                    marginTop: '3px',
+                                    fontSize: '11px',
+                                    border: '0.2px solid #989898',
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#47FF78"
+                                      : "#CCFFCC",
+                                    color: "#5A5656",
+                                    ...provided.draggableProps.style}}
+                                  >
+                                    {item.name} {item.points} op
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
             </div>
-              )}
-              </Draggable>
-
-                ))
-              )
-            }
-          )}
-        {provided.placeholder}
+          );
+        })}
+        </div>
           </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    </div>
+          </div>
+        </div>
+        <div className='container'>
+          <div className='bloc-tabs'>
+            < button
+            className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
+            onClick={() => toggleTab(2)}
+          
+            >
+              Lukuvuosi II
+            </button>
+          <div className='content-tabs'>
+            <div
+              className={toggleState === 2 ? "content active-content2" : "content"}
+            >
+        {Object.entries(periods).map(([columnId, column], index) => 
+        { if(vuosi2.indexOf(column.name) > -1)
+          return (
+            
+            <div
+              style={{
+                ddisplay: 'block',
+                flexDirection: "column",
+                position: 'relative',
+                alignItems: "center",
+                marginTop: '-20px',
+              }}
+              key={columnId}
+              
+            >
+              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#666666"
+                            : "#F2F2F2",
+                          alignItems: 'center',
+                          overflowY: 'scroll',
+                          overflowX: 'hidden',
+                          boxShadow: '0.5px 1px 5px #000000',
+                          width: '130px',
+                          height: '250px',
+                          marginInline: '-5px'
+                        }}
+                      >
+                        {column.items?.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={item.required ? {
+                                      height: '40px',
+                                      textAlign: 'center',
+                                      marginLeft: '2%',
+                                      width: '96%',
+                                      marginTop: '3px',
+                                      fontSize: '11px',
+                                      border: '0.2px solid #989898',
+                                      backgroundColor: snapshot.isDragging
+                                        ? "#6EE8FF"
+                                        : "#4D97E2",
+                                      color: "white",
+                                      ...provided.draggableProps.style
+                                    }:{ height: '40px',
+                                    textAlign: 'center',
+                                    marginLeft: '2%',
+                                    width: '96%',
+                                    marginTop: '3px',
+                                    fontSize: '11px',
+                                    border: '0.2px solid #989898',
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#47FF78"
+                                      : "#CCFFCC",
+                                    color: "#5A5656",
+                                    ...provided.draggableProps.style}}
+                                  >
+                                    {item.name} {item.points} op
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
+            </div>
+          );
+        })}
+        </div>
+          </div>
+          </div>
+        </div>
+        <div className='container'>
+          <div className='bloc-tabs'>
+            < button
+            className={toggleState === 3 ? "tabs active-tabs" : "tabs"}
+            onClick={() => toggleTab(3)}
+          
+            >
+              Lukuvuosi III
+            </button>
+          <div className='content-tabs'>
+            <div
+              className={toggleState === 3 ? "content active-content3" : "content"}
+            >
+        {Object.entries(periods).map(([columnId, column], index) => 
+        { if(vuosi3.indexOf(column.name) > -1)
+          return (
+            
+            <div
+              style={{
+                display: 'block',
+                flexDirection: "column",
+                position: 'relative',
+                alignItems: "center",
+                marginTop: '-20px',
+              }}
+              key={columnId}
+              
+            >
+              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#666666"
+                            : "#F2F2F2",
+                          alignItems: 'center',
+                          overflowY: 'scroll',
+                          overflowX: 'hidden',
+                          boxShadow: '0.5px 1px 5px #000000',
+                          width: '130px',
+                          height: '250px',
+                          marginInline: '-5px'
+                        }}
+                      >
+                        {column.items?.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={item.required ? {
+                                      height: '40px',
+                                      textAlign: 'center',
+                                      marginLeft: '2%',
+                                      width: '96%',
+                                      marginTop: '3px',
+                                      fontSize: '11px',
+                                      border: '0.2px solid #989898',
+                                      backgroundColor: snapshot.isDragging
+                                        ? "#6EE8FF"
+                                        : "#4D97E2",
+                                      color: "white",
+                                      ...provided.draggableProps.style
+                                    }:{ height: '40px',
+                                    textAlign: 'center',
+                                    marginLeft: '2%',
+                                    width: '96%',
+                                    marginTop: '3px',
+                                    fontSize: '11px',
+                                    border: '0.2px solid #989898',
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#47FF78"
+                                      : "#CCFFCC",
+                                    color: "#5A5656",
+                                    ...provided.draggableProps.style}}
+                                  >
+                                    {item.name} {item.points} op
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
+            </div>
+          );
+        })}
+        </div>
+          </div>
+          </div>
+        </div>
+        <div className='container'>
+          <div className='bloc-tabs'>
+            < button
+            className={toggleState === 4 ? "tabs active-tabs" : "tabs"}
+            onClick={() => toggleTab(4)}
+          
+            >
+              Kesäopinnot
+            </button>
+          <div className='content-tabs'>
+            <div
+              className={toggleState === 4 ? "content active-content4" : "content"}
+            >
+        {Object.entries(periods).map(([columnId, column], index) => 
+        { if(kesa.indexOf(column.name) > -1)
+          return (
+            
+            <div
+              style={{
+                display: 'block',
+                flexDirection: "column",
+                position: 'relative',
+                alignItems: "center",
+                marginTop: '-20px',
+              }}
+              key={columnId}
+              
+            >
+              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div 
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#666666"
+                            : "#FFFFCC",
+                          alignItems: 'center',
+                          overflowY: 'scroll',
+                          overflowX: 'hidden',
+                          boxShadow: '0.5px 1px 5px #000000',
+                          width: '130px',
+                          height: '250px',
+                          marginInline: '-5px'
+                        }}
+                      >
+                        {column.items?.map((item, index) => {
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={item.required ? {
+                                      height: '40px',
+                                      textAlign: 'center',
+                                      marginLeft: '2%',
+                                      width: '96%',
+                                      marginTop: '3px',
+                                      fontSize: '11px',
+                                      border: '0.2px solid #989898',
+                                      backgroundColor: snapshot.isDragging
+                                        ? "#6EE8FF"
+                                        : "#4D97E2",
+                                      color: "white",
+                                      ...provided.draggableProps.style
+                                    }:{ height: '40px',
+                                    textAlign: 'center',
+                                    marginLeft: '2%',
+                                    width: '96%',
+                                    marginTop: '3px',
+                                    fontSize: '11px',
+                                    border: '0.2px solid #989898',
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#47FF78"
+                                      : "#CCFFCC",
+                                    color: "#5A5656",
+                                    ...provided.draggableProps.style}}
+                                  >
+                                    {item.name} {item.points} op
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                          );
+                        })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+              </div>
+            </div>
+          );
+        })}
+        </div>
+          </div>
+          </div>
+        </div>
+        
+        
+        
+      </DragDropContext>
+  
+  
   )
 }
 
