@@ -20,11 +20,17 @@ const AllPoints = (props) => {
   
 const MainLogo = (props) => {
     return (
-      <div style={{backgroundColor:'#b32d84', position: 'absolute', top:-50, left: -1, right: -1}}>
-        <img src={logo} width={60} style={{transform:'translate(10px, 55px)'}}/>
-        <h3 style={{color:'lightGrey', transform: 'translate(100px, 5px)'}}>{props.tutkinto} {AllPoints(props.allPoints)}/{props.fromTotal} opintopistettä</h3>
+      <div style={{backgroundColor:'#b32d84', position: 'absolute', top:-60, left: 0, right: 0}}>
+        <img src={logo} width={60} style={{transform:'translate(10px, 60px)'}}/>
+        <h4 style={{color:'lightGrey', transform: 'translate(90px, 10px)'}}>{props.tutkinto} {AllPoints(props.allPoints)}/{props.fromTotal} opintopistettä</h4>
       </div>
     )
   }
 
-export default MainLogo
+const PortraitLogo = () => {
+  return (
+    <img src={logo} width={180} height={120} style={{margin: 100}}/>
+  )
+}
+
+export  {MainLogo, PortraitLogo}
