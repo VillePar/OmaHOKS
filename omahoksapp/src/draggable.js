@@ -103,7 +103,7 @@ return (
                           boxShadow: '0.5px 1px 5px #000000',
                           width: '130px',
                           height: '260px',
-                          marginInline: '-5px'
+                          
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -191,7 +191,7 @@ return (
               key={columnId}
               
             >
-              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -209,8 +209,8 @@ return (
                           boxShadow: '0.5px 1px 5px #000000',
                           width: '130px',
                           height: '250px',
-                          marginInline: '-5px',
-                          marginTop: '-5px'
+                          marginInline: '1%',
+                          marginTop: '-1%'
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -300,7 +300,7 @@ return (
               key={columnId}
               
             >
-              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -318,7 +318,8 @@ return (
                           boxShadow: '0.5px 1px 5px #000000',
                           width: '130px',
                           height: '250px',
-                          marginInline: '-5px'
+                          marginInline: '1%',
+                          marginTop: '-1%'
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -408,7 +409,7 @@ return (
               key={columnId}
               
             >
-              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -426,7 +427,8 @@ return (
                           boxShadow: '0.5px 1px 5px #000000',
                           width: '130px',
                           height: '250px',
-                          marginInline: '-5px'
+                          marginInline: '1%',
+                          marginTop: '-1%'
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -516,7 +518,7 @@ return (
               key={columnId}
               
             >
-              {<h2 style={{fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -534,7 +536,8 @@ return (
                           boxShadow: '0.5px 1px 5px #000000',
                           width: '130px',
                           height: '250px',
-                          marginInline: '-5px'
+                          marginInline: '1%',
+                          marginTop: '-1%'
                         }}
                       >
                         {column.items?.map((item, index) => {

@@ -108,9 +108,7 @@ const ytoID = [3708881, 3708883, 3708884]
   }
   
   // useEffect hook calls apiCall function when dom is rendered for the first time 
-  useEffect(() => {
-    apiCall()
-  },[])
+ 
   
   // function to track inital screen orientation when application is opened
   const initialScreenOrientation = () => {
@@ -143,12 +141,36 @@ const ytoID = [3708881, 3708883, 3708884]
     updateScreenOrientation()
   })
 
+  // simple function for resetbutton, that prompts the user if they really want to reset all of their choices.
   const handleclick = () => {
     if(window.confirm("Haluatko tyhjä kaikki periodit?"))
     return(
+      //if user accepts, then apiCall function is called again, which returns the app for it's original state.
       apiCall()
     )
   }
+
+  // useEffect hook to check if there is anything saved from the user to local storage, if not the we call
+  // the apiCall function.
+  useEffect(() => {
+    const data = localStorage.getItem("studiesToPeriods")
+    const data2 = localStorage.getItem("tutkinto")
+    if(data) {
+      setPeriods(JSON.parse(data))
+      setTutkinto(JSON.parse(data2))
+    }
+    else {
+      apiCall()
+    }
+  }, [])
+
+  //useEffect hook to save user choices to local storage, so made choices stay between sessions.
+  useEffect(() => {
+    localStorage.setItem("studiesToPeriods", JSON.stringify(periods))
+    localStorage.setItem("tutkinto", JSON.stringify(tutkinto))
+  })
+
+
   // if lanscape-variable is true, then the main application is drawn to the screen
   if(landscape) 
     return(
