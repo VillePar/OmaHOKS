@@ -21,8 +21,11 @@ const AllPoints = (props) => {
 const MainLogo = (props) => {
     return (
       <div style={{backgroundColor:'#b32d84', position: 'absolute', top:-60, left: 0, right: 0}}>
-        <img src={logo} width={60} style={{transform:'translate(10px, 60px)'}}/>
+        <button style={{width: '100px',border: '2px solid black',borderRadius: '5px',color:'#DCDCDC',backgroundColor: '#008080',transform: "translate(600px, 50px)"}}>Tallenna PDF</button>
+        
+        <img src={logo} width={60} style={{transform:'translate(-80px, 60px)'}}/>
         <h4 style={{color:'lightGrey', transform: 'translate(90px, 10px)'}}>{props.tutkinto} {AllPoints(props.allPoints)}/{props.fromTotal} opintopistettä</h4>
+        
       </div>
     )
   }
