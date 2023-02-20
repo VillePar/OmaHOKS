@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import "./TabStyle.css"
 
 
-//onDragEnd function is essentila for defining what happens to the draggable object when
+//onDragEnd function is essential for defining what happens to the draggable object when
 // it is dropped in droppable area
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
@@ -55,36 +55,36 @@ let vuosi2 = ["Syksy I/II", "Syksy II/II", "Kevät III/II", "Kevät IV/II"]
 let vuosi3 = ["Syksy I/III", "Syksy II/III", "Kevät III/III", "Kevät IV/III"]
 let kesa = ["Kesä V", "Kesä V/II", "Kesä V/III"]
 
-const StudiesToDrag = ({periods, setPeriods}) => {
+const StudiesToDrag = ({periods, setPeriods, onclick}) => {
+  // toggelstate variabale is to keep track that which of the tabs is selected
   const [toggleState, setToggleState] = useState(1)
 
+  // toggletab function sets index of the selected tab for the togglestate variable
 const toggleTab = (index) => {
   setToggleState(index)
 }
 
-  return (
+
+return (
     <DragDropContext
         onDragEnd={result => onDragEnd(result, periods, setPeriods)}
       >
-
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(column.name === "Tutkinnon osat")
-        
-          return (
-            
+        return (
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                marginTop: '50px',
+                marginTop: '40px',
                 backgroundColor: '#E0E0E0',
                 border: '1px solid lightGrey',
-                height: 'fit-content'
+                height: '325px'
               }}
               key={columnId}
-              
-            >
+              >
+              <button onClick={onclick} style={{borderRadius: '5px',border: '2px solid black',fontSize: '12px',height: '25px',width: '60%',color: '#DCDCDC', backgroundColor: '#008080'}}>Resetoi</button>
               {<h2 style={{fontSize: '13px'}}>{column.name}</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
@@ -102,7 +102,7 @@ const toggleTab = (index) => {
                           overflowX: 'hidden',
                           boxShadow: '0.5px 1px 5px #000000',
                           width: '130px',
-                          height: '270px',
+                          height: '260px',
                           marginInline: '-5px'
                         }}
                       >
@@ -232,7 +232,7 @@ const toggleTab = (index) => {
                                       marginLeft: '2%',
                                       width: '96%',
                                       marginTop: '3px',
-                                      fontSize: '11px',
+                                      fontSize: '10px',
                                       border: '0.2px solid #989898',
                                       backgroundColor: snapshot.isDragging
                                         ? "#6EE8FF"
@@ -244,7 +244,7 @@ const toggleTab = (index) => {
                                     marginLeft: '2%',
                                     width: '96%',
                                     marginTop: '3px',
-                                    fontSize: '11px',
+                                    fontSize: '10px',
                                     border: '0.2px solid #989898',
                                     backgroundColor: snapshot.isDragging
                                       ? "#47FF78"

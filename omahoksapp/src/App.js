@@ -143,30 +143,35 @@ const ytoID = [3708881, 3708883, 3708884]
     updateScreenOrientation()
   })
 
-  const MainApp = () => {
-    if(landscape) 
-      return(
-        <div style={{display: 'flex'}}>
+  const handleclick = () => {
+    if(window.confirm("Haluatko tyhjä kaikki periodit?"))
+    return(
+      apiCall()
+    )
+  }
+  // if lanscape-variable is true, then the main application is drawn to the screen
+  if(landscape) 
+    return(
+      <div style={{display: 'flex'}}>
         <MainLogo tutkinto={tutkinto?.name} allPoints={periods} fromTotal={tutkinto?.total_points}/>
-        <StudiesToDrag periods={periods} setPeriods={setPeriods}/>
+        <StudiesToDrag periods={periods} setPeriods={setPeriods} onclick={handleclick}/>
       </div>
-      )
-    else
-      return(
-        <div style={{display: 'flex',backgroundColor: "#b32d84", height: '100vh', width: '100hv', alignItems: 'center'}}>
-          <div style={{textAlign: 'center', marginBottom: '200px'}}>
-          <PortraitLogo/>
-            <div style={{color: 'white', fontSize: '30px', textAlign: 'center', fontFamily: 'monospace'}}>
-            Käännä puhelin vaakatasoon
-            </div>
+    )
+  else
+    return(
+      <div style={{display: 'flex',backgroundColor: "#b32d84", height: '100vh', width: '100hv', alignItems: 'center'}}>
+        <div style={{textAlign: 'center', marginBottom: '200px'}}>
+        <PortraitLogo/>
+          <div style={{color: 'white', fontSize: '30px', textAlign: 'center', fontFamily: 'monospace'}}>
+          Käännä puhelin vaakatasoon
           </div>
         </div>
-      )
-    }
+      </div>
+    )
+    
   
-  return(
-    <MainApp/>
-  )
+    
+  
 }
  
 export default OmaHoks;
