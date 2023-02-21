@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import "./TabStyle.css"
+import "./cssStyles/TabStyle.css"
+import './cssStyles/drag&dropStyle.css'
 
 
 //onDragEnd function is essential for defining what happens to the draggable object when
-// it is dropped in droppable area
+// it is dropped in to the droppable area.
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
@@ -44,69 +45,58 @@ const onDragEnd = (result, columns, setColumns) => {
 
 
 // function to update the amount of points in one period when study is dropped in to the said period
-const sum = (props) => {
+const sumPoints = (props) => {
   return(
     props.reduce((acc, currentValue) => acc + currentValue.points, 0)
   )
 }
 
+// These arrays are for to compare the period names so we can split our periods in to tabs based on the period name
 let vuosi1 = ["Syksy I", "Syksy II", "Kevät III", "Kevät IV"]
 let vuosi2 = ["Syksy I/II", "Syksy II/II", "Kevät III/II", "Kevät IV/II"]
 let vuosi3 = ["Syksy I/III", "Syksy II/III", "Kevät III/III", "Kevät IV/III"]
 let kesa = ["Kesä V", "Kesä V/II", "Kesä V/III"]
 
 const StudiesToDrag = ({periods, setPeriods, onclick}) => {
-  // toggelstate variabale is to keep track that which of the tabs is selected
+   
+  // toggelstate variabale is to keep track that which of the tabs containing periods is selected
   const [toggleState, setToggleState] = useState(1)
 
-  // toggletab function sets index of the selected tab for the togglestate variable
-const toggleTab = (index) => {
-  setToggleState(index)
-}
+  // toggletab function sets the index of the selected tab for the togglestate variable
+  const toggleTab = (index) => {
+    setToggleState(index)
+  }
 
-
-return (
+  return (
     <DragDropContext
         onDragEnd={result => onDragEnd(result, periods, setPeriods)}
       >
+        {/*Inside the DragDropContext we first iterate our main object "periods"*/}
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(column.name === "Tutkinnon osat")
         return (
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginTop: '40px',
-                backgroundColor: '#E0E0E0',
-                border: '1px solid lightGrey',
-                height: '325px'
-              }}
+              className='qualificationUnitsContainer'
               key={columnId}
               >
-              <button onClick={onclick} style={{borderRadius: '5px',border: '2px solid black',fontSize: '12px',height: '25px',width: '60%',color: '#DCDCDC', backgroundColor: '#008080'}}>Resetoi</button>
+              <button className='resetButton' onClick={onclick}>Resetoi</button>
               {<h2 style={{fontSize: '13px'}}>{column.name}</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
                     return (
                       <div 
+                      className='qualificationUnits'
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
                           background: snapshot.isDraggingOver
                             ? "#666666"
                             : "#F2F2F2",
-                          alignItems: 'center',
-                          overflowY: 'scroll',
-                          overflowX: 'hidden',
-                          boxShadow: '0.5px 1px 5px #000000',
-                          width: '130px',
-                          height: '260px',
-                          
-                        }}
+                         }}
                       >
-                        {column.items?.map((item, index) => {
+                        {/*Inside the droppable we iterate all of our list items to be draggable objects*/}
+                        {column.items.map((item, index) => {
                           return (
                             <Draggable
                               key={item.id}
@@ -116,57 +106,46 @@ return (
                               {(provided, snapshot) => {
                                 return (
                                   <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={item.required ? {
-                                      height: '40px',
-                                      textAlign: 'center',
-                                      marginLeft: '2%',
-                                      width: '96%',
-                                      marginTop: '3px',
-                                      fontSize: '11px',
-                                      border: '0.2px solid #989898',
-                                      backgroundColor: snapshot.isDragging
-                                        ? "#6EE8FF"
-                                        : "#4D97E2",
-                                      color: "white",
-                                      ...provided.draggableProps.style
-                                    }:{ height: '40px',
-                                    textAlign: 'center',
-                                    marginLeft: '2%',
-                                    width: '96%',
-                                    marginTop: '3px',
-                                    fontSize: '11px',
-                                    border: '0.2px solid #989898',
+                                  className='draggableStudy'
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={item.required ? {
                                     backgroundColor: snapshot.isDragging
-                                      ? "#47FF78"
-                                      : "#CCFFCC",
-                                    color: "#5A5656",
-                                    ...provided.draggableProps.style}}
+                                      ? "#6EE8FF"
+                                      : "#4D97E2",
+                                    ...provided.draggableProps.style
+                                  }:{backgroundColor: snapshot.isDragging
+                                    ? "#47FF78"
+                                    : "#CCFFCC",
+                                  color: "#5A5656",
+                                  ...provided.draggableProps.style}}
                                   >
                                     {item.name} {item.points} op
                                   </div>
                                 );
                               }}
                             </Draggable>
-                          );
+                            );
                         })}
                         {provided.placeholder}
                       </div>
                     );
                   }}
                 </Droppable>
+                
               </div>
             </div>
           );
         })}
+        {/*Each period is wrapper around, this tab-wrapper is duplicated for 
+        each of the periods*/}
         <div className='container'>
           <div className='bloc-tabs'>
             < button
+            // button onclick calls our toggTab function to change the index of the selected tab
             className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
             onClick={() => toggleTab(1)}
-            
             >
               Lukuvuosi I
             </button>
@@ -174,44 +153,28 @@ return (
             <div
               className={toggleState === 1 ? "content active-content" : "content"}
             >
-              
+              {/*Inside the tab we iterate our object*/}
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(vuosi1.indexOf(column.name) > -1)
           return (
-            
             <div
-              style={{
-                display: 'block',
-                flexDirection: "column",
-                position: 'relative',
-                alignItems: "center",
-                marginTop: '-20px',
-                
-              }}
+              className='periodContainer'
               key={columnId}
-              
-            >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              >
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
                     return (
                       <div 
+                      className='droppablePeriod'
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
                           background: snapshot.isDraggingOver
                             ? "#666666"
                             : "#F2F2F2",
-                          alignItems: 'center',
-                          overflowY: 'scroll',
-                          overflowX: 'hidden',
-                          boxShadow: '0.5px 1px 5px #000000',
-                          width: '130px',
-                          height: '250px',
-                          marginInline: '1%',
-                          marginTop: '-1%'
-                        }}
+                          }}
                       >
                         {column.items?.map((item, index) => {
                           return (
@@ -223,30 +186,16 @@ return (
                               {(provided, snapshot) => {
                                 return (
                                   <div
+                                  className='draggableStudy'
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     style={item.required ? {
-                                      height: '40px',
-                                      textAlign: 'center',
-                                      marginLeft: '2%',
-                                      width: '96%',
-                                      marginTop: '3px',
-                                      fontSize: '10px',
-                                      border: '0.2px solid #989898',
                                       backgroundColor: snapshot.isDragging
                                         ? "#6EE8FF"
                                         : "#4D97E2",
-                                      color: "white",
                                       ...provided.draggableProps.style
-                                    }:{ height: '40px',
-                                    textAlign: 'center',
-                                    marginLeft: '2%',
-                                    width: '96%',
-                                    marginTop: '3px',
-                                    fontSize: '10px',
-                                    border: '0.2px solid #989898',
-                                    backgroundColor: snapshot.isDragging
+                                    }:{backgroundColor: snapshot.isDragging
                                       ? "#47FF78"
                                       : "#CCFFCC",
                                     color: "#5A5656",
@@ -277,7 +226,6 @@ return (
             < button
             className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
             onClick={() => toggleTab(2)}
-          
             >
               Lukuvuosi II
             </button>
@@ -288,38 +236,23 @@ return (
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(vuosi2.indexOf(column.name) > -1)
           return (
-            
             <div
-              style={{
-                ddisplay: 'block',
-                flexDirection: "column",
-                position: 'relative',
-                alignItems: "center",
-                marginTop: '-20px',
-              }}
-              key={columnId}
-              
+            className='periodContainer'
+            key={columnId}
             >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
                     return (
                       <div 
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "#666666"
-                            : "#F2F2F2",
-                          alignItems: 'center',
-                          overflowY: 'scroll',
-                          overflowX: 'hidden',
-                          boxShadow: '0.5px 1px 5px #000000',
-                          width: '130px',
-                          height: '250px',
-                          marginInline: '1%',
-                          marginTop: '-1%'
+                      className='droppablePeriod'
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#666666"
+                          : "#F2F2F2",
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -332,34 +265,20 @@ return (
                               {(provided, snapshot) => {
                                 return (
                                   <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={item.required ? {
-                                      height: '40px',
-                                      textAlign: 'center',
-                                      marginLeft: '2%',
-                                      width: '96%',
-                                      marginTop: '3px',
-                                      fontSize: '11px',
-                                      border: '0.2px solid #989898',
-                                      backgroundColor: snapshot.isDragging
-                                        ? "#6EE8FF"
-                                        : "#4D97E2",
-                                      color: "white",
-                                      ...provided.draggableProps.style
-                                    }:{ height: '40px',
-                                    textAlign: 'center',
-                                    marginLeft: '2%',
-                                    width: '96%',
-                                    marginTop: '3px',
-                                    fontSize: '11px',
-                                    border: '0.2px solid #989898',
+                                  className='draggableStudy'
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={item.required ? {
                                     backgroundColor: snapshot.isDragging
-                                      ? "#47FF78"
-                                      : "#CCFFCC",
-                                    color: "#5A5656",
-                                    ...provided.draggableProps.style}}
+                                      ? "#6EE8FF"
+                                      : "#4D97E2",
+                                    ...provided.draggableProps.style
+                                  }:{backgroundColor: snapshot.isDragging
+                                    ? "#47FF78"
+                                    : "#CCFFCC",
+                                  color: "#5A5656",
+                                  ...provided.draggableProps.style}}
                                   >
                                     {item.name} {item.points} op
                                   </div>
@@ -386,7 +305,6 @@ return (
             < button
             className={toggleState === 3 ? "tabs active-tabs" : "tabs"}
             onClick={() => toggleTab(3)}
-          
             >
               Lukuvuosi III
             </button>
@@ -397,38 +315,23 @@ return (
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(vuosi3.indexOf(column.name) > -1)
           return (
-            
-            <div
-              style={{
-                display: 'block',
-                flexDirection: "column",
-                position: 'relative',
-                alignItems: "center",
-                marginTop: '-20px',
-              }}
-              key={columnId}
-              
-            >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+          <div
+            className='periodContainer'
+            key={columnId}
+              >
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
                     return (
                       <div 
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "#666666"
-                            : "#F2F2F2",
-                          alignItems: 'center',
-                          overflowY: 'scroll',
-                          overflowX: 'hidden',
-                          boxShadow: '0.5px 1px 5px #000000',
-                          width: '130px',
-                          height: '250px',
-                          marginInline: '1%',
-                          marginTop: '-1%'
+                      className='droppablePeriod'
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#666666"
+                          : "#F2F2F2",
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -441,30 +344,16 @@ return (
                               {(provided, snapshot) => {
                                 return (
                                   <div
+                                  className='draggableStudy'
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                     style={item.required ? {
-                                      height: '40px',
-                                      textAlign: 'center',
-                                      marginLeft: '2%',
-                                      width: '96%',
-                                      marginTop: '3px',
-                                      fontSize: '11px',
-                                      border: '0.2px solid #989898',
                                       backgroundColor: snapshot.isDragging
                                         ? "#6EE8FF"
                                         : "#4D97E2",
-                                      color: "white",
                                       ...provided.draggableProps.style
-                                    }:{ height: '40px',
-                                    textAlign: 'center',
-                                    marginLeft: '2%',
-                                    width: '96%',
-                                    marginTop: '3px',
-                                    fontSize: '11px',
-                                    border: '0.2px solid #989898',
-                                    backgroundColor: snapshot.isDragging
+                                    }:{backgroundColor: snapshot.isDragging
                                       ? "#47FF78"
                                       : "#CCFFCC",
                                     color: "#5A5656",
@@ -495,7 +384,6 @@ return (
             < button
             className={toggleState === 4 ? "tabs active-tabs" : "tabs"}
             onClick={() => toggleTab(4)}
-          
             >
               Kesäopinnot
             </button>
@@ -506,38 +394,23 @@ return (
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(kesa.indexOf(column.name) > -1)
           return (
-            
-            <div
-              style={{
-                display: 'block',
-                flexDirection: "column",
-                position: 'relative',
-                alignItems: "center",
-                marginTop: '-20px',
-              }}
-              key={columnId}
-              
-            >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sum(column.items)} op</h2>}
+          <div
+            className='periodContainer'
+            key={columnId}
+              >
+              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
                     return (
                       <div 
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                        style={{
-                          background: snapshot.isDraggingOver
-                            ? "#666666"
-                            : "#FFFFCC",
-                          alignItems: 'center',
-                          overflowY: 'scroll',
-                          overflowX: 'hidden',
-                          boxShadow: '0.5px 1px 5px #000000',
-                          width: '130px',
-                          height: '250px',
-                          marginInline: '1%',
-                          marginTop: '-1%'
+                      className='droppablePeriod'
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                      style={{
+                        background: snapshot.isDraggingOver
+                          ? "#666666"
+                          : "#F2F2F2",
                         }}
                       >
                         {column.items?.map((item, index) => {
@@ -550,34 +423,20 @@ return (
                               {(provided, snapshot) => {
                                 return (
                                   <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                    {...provided.dragHandleProps}
-                                    style={item.required ? {
-                                      height: '40px',
-                                      textAlign: 'center',
-                                      marginLeft: '2%',
-                                      width: '96%',
-                                      marginTop: '3px',
-                                      fontSize: '11px',
-                                      border: '0.2px solid #989898',
-                                      backgroundColor: snapshot.isDragging
-                                        ? "#6EE8FF"
-                                        : "#4D97E2",
-                                      color: "white",
-                                      ...provided.draggableProps.style
-                                    }:{ height: '40px',
-                                    textAlign: 'center',
-                                    marginLeft: '2%',
-                                    width: '96%',
-                                    marginTop: '3px',
-                                    fontSize: '11px',
-                                    border: '0.2px solid #989898',
+                                  className='draggableStudy'
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={item.required ? {
                                     backgroundColor: snapshot.isDragging
-                                      ? "#47FF78"
-                                      : "#CCFFCC",
-                                    color: "#5A5656",
-                                    ...provided.draggableProps.style}}
+                                      ? "#6EE8FF"
+                                      : "#4D97E2",
+                                    ...provided.draggableProps.style
+                                  }:{backgroundColor: snapshot.isDragging
+                                    ? "#47FF78"
+                                    : "#CCFFCC",
+                                  color: "#5A5656",
+                                  ...provided.draggableProps.style}}
                                   >
                                     {item.name} {item.points} op
                                   </div>
@@ -599,13 +458,8 @@ return (
           </div>
           </div>
         </div>
-        
-        
-        
-      </DragDropContext>
-  
-  
-  )
+        </DragDropContext>
+        )
 }
 
 export default StudiesToDrag;

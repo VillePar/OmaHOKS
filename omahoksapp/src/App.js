@@ -106,11 +106,7 @@ const ytoID = [3708881, 3708883, 3708884]
       }
     }
   }
-  
-  // useEffect hook calls apiCall function when dom is rendered for the first time 
- 
-  
-  // function to track inital screen orientation when application is opened
+ // function to track inital screen orientation when application is opened
   const initialScreenOrientation = () => {
     if(window.matchMedia("(orientation: landscape)").matches)
       return(
@@ -119,6 +115,15 @@ const ytoID = [3708881, 3708883, 3708884]
       else(
         setLandscape(false)
       )
+      window.addEventListener('orientationchange', () => {
+        if(window.matchMedia("(orientation: landscape)").matches)
+        return(
+          setLandscape(false)
+        )
+        else(
+          setLandscape(true)
+        )
+      })
   }
 
   // function to track mobile devices screen orientation changes to update the landscape-variables boolean value

@@ -1,0 +1,16 @@
+.upperPinkBar{
+    background-color: #b32d84;
+    position: absolute;
+    top: -60px;
+    left: 0px;
+    right: 0px;
+    box-sizing: border-box;
+}
+
+.pdfButton{
+    width: 100px;
+    border: 2px solid black;
+    border-radius: 5px;
+    color: #DCDCDC;
+    background-color: #008080;
+}

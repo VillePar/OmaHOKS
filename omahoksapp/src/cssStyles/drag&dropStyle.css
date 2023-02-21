@@ -1,0 +1,58 @@
+.draggableStudy{
+    text-align: center;
+    height: 40px;
+    margin-left: 2%;
+    width: 96%;
+    margin-top: 3px;
+    font-size: 11px;
+    border: 1px solid #565656;
+    color: rgb(222, 217, 217);
+    font-family: sans-serif;
+}
+
+.qualificationUnitsContainer{
+    display: flex;
+    flex-direction: column;
+    align-Items: center;
+    margin-Top: 40px;
+    background-Color: #E0E0E0;
+    border: 1px solid lightGrey;
+    height: 325px;
+}
+
+.periodContainer{
+    display: block;
+    flex-direction: column;
+    position: relative;
+    margin-top: -20px;
+}
+
+.qualificationUnits{
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: 1px solid #2c2b2b;
+    width: 130px;
+    height: 260px;
+}
+
+.droppablePeriod{
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: 2px 1px 5px #1b1a1a;
+    width: 130px;
+    height: 250px;
+    margin-inline: 1%;
+    margin-top: -1%;
+}
+
+.resetButton{
+    border-radius: 5px;
+    border: 2px solid black;
+    font-size: 12px;
+    height: 25px;
+    width: 60%;
+    color: #DCDCDC;
+    background-Color: #008080;
+}
