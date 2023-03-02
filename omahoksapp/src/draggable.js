@@ -51,11 +51,7 @@ const sumPoints = (props) => {
   )
 }
 
-// These arrays are for to compare the period names so we can split our periods in to tabs based on the period name
-let vuosi1 = ["Syksy I", "Syksy II", "Kevät III", "Kevät IV"]
-let vuosi2 = ["Syksy I/II", "Syksy II/II", "Kevät III/II", "Kevät IV/II"]
-let vuosi3 = ["Syksy I/III", "Syksy II/III", "Kevät III/III", "Kevät IV/III"]
-let kesa = ["Kesä V", "Kesä V/II", "Kesä V/III"]
+const ytoID = [3708881, 3708883, 3708884]
 
 const StudiesToDrag = ({periods, setPeriods, onclick}) => {
    
@@ -73,7 +69,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
       >
         {/*Inside the DragDropContext we first iterate our main object "periods"*/}
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(column.name === "Tutkinnon osat")
+        { if(column.id === 0)
         return (
             <div
               className='qualificationUnitsContainer'
@@ -97,6 +93,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                       >
                         {/*Inside the droppable we iterate all of our list items to be draggable objects*/}
                         {column.items.map((item, index) => {
+                          if(ytoID.indexOf(item.id) === -1)
                           return (
                             <Draggable
                               key={item.id}
@@ -127,7 +124,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                               }}
                             </Draggable>
                             );
-                        })}
+                            })}
                         {provided.placeholder}
                       </div>
                     );
@@ -138,8 +135,8 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
             </div>
           );
         })}
-        {/*Each period is wrapper around, this tab-wrapper is duplicated for 
-        each of the periods*/}
+        {/*Each school year is wrapped around tab, this tab-wrapper is duplicated for 
+        each of the years*/}
         <div className='container'>
           <div className='bloc-tabs'>
             < button
@@ -155,7 +152,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
             >
               {/*Inside the tab we iterate our object*/}
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(vuosi1.indexOf(column.name) > -1)
+        { if(column.id >= 1 && column.id < 5)
           return (
             <div
               className='periodContainer'
@@ -234,7 +231,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className={toggleState === 2 ? "content active-content2" : "content"}
             >
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(vuosi2.indexOf(column.name) > -1)
+        { if(column.id > 5 && column.id <= 9)
           return (
             <div
             className='periodContainer'
@@ -313,7 +310,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className={toggleState === 3 ? "content active-content3" : "content"}
             >
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(vuosi3.indexOf(column.name) > -1)
+        { if(column.id > 10 && column.id <= 14) 
           return (
           <div
             className='periodContainer'
@@ -392,7 +389,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className={toggleState === 4 ? "content active-content4" : "content"}
             >
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(kesa.indexOf(column.name) > -1)
+        { if(column.id === 5 || column.id === 10 || column.id === 15)
           return (
           <div
             className='periodContainer'
@@ -410,7 +407,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                       style={{
                         background: snapshot.isDraggingOver
                           ? "#666666"
-                          : "#F2F2F2",
+                          : "	#FFFACD",
                         }}
                       >
                         {column.items?.map((item, index) => {
