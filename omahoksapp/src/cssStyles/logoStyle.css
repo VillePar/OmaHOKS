@@ -1,7 +1,7 @@
 .upperPinkBar{
     background-color: #b32d84;
     position: absolute;
-    top: -60px;
+    top: -105px;
     left: 0px;
     right: 0px;
     box-sizing: border-box;
@@ -9,8 +9,21 @@
 
 .pdfButton{
     width: 100px;
+    height: 30px;
     border: 2px solid black;
     border-radius: 5px;
     color: #DCDCDC;
     background-color: #008080;
-}
+    z-index: 1;
+} 
+
+.seasonButton{
+    width: 70px;
+    height: 25px;
+    position: relative;
+    border: 2px solid rgb(118, 116, 116);
+    border-radius: 5px;
+    color: #DCDCDC;
+    background-color: #0c0c0c;
+    z-index: 1;
+} 

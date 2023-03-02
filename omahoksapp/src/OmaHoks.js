@@ -1,16 +1,20 @@
 import React, { useEffect, useState, useRef} from 'react';
 import axios from 'axios';
-import {MainLogo, PortraitLogo} from './omaLogo';
+import {MainLogo, PortraitScreen} from './upperBar';
 import StudiesToDrag from './draggable';
-
+import {periodDataFall, periodDataSpring} from './periodData'
 
 const OmaHoks = () => {
  
-const [tutkinto, setTutkinto] = useState([]);
+const [qualification, setQualification] = useState([]);
   // periods is the main object that we are going fill fit json-data and iterate for the application
 const [periods, setPeriods] = useState({})
 
-// landscape-variable is ment to track if user is holding the phone in portrait or in Slandscape mode.
+// startSeason boolean to change the periods depending on if the user has started hes/hers studies in spring of autumn.
+// true for autumn and false for spring.
+const [startSeason, setStartSeason] = useState(true)
+
+// landscape-variable is ment to track if user is holding the phone in portrait or in landscape mode.
 // Later in the code we will give it a boolean value depending on the screen orientation.
 const [landscape, setLandscape] = useState()
 
@@ -26,86 +30,24 @@ const ytoID = [3708881, 3708883, 3708884]
       setMatem(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708883))
     setYhteisK(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708884))*/}
 
-      setTutkinto(response.data.tutkinto)
-  
-      setPeriods({
-        opinnot: {
-          name: "Tutkinnon osat",
-          items: response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1)
-          
-        },
-        syksyI: {
-          name: "Syksy I",
-          items: [],
-          
-        },
-        syksyII: {
-          name: "Syksy II",
-          items: []
-        },
-        kevätIII: {
-          name: "Kevät III",
-          items: []
-        },
-        kevätIV: {
-          name: "Kevät IV",
-          items: []
-        },
-        kesäV: {
-          name: "Kesä V",
-          items: []
-        }
-        ,
-        syksyI2: {
-          name: "Syksy I/II",
-          items: [],
-          
-        },
-        syksyII2: {
-          name: "Syksy II/II",
-          items: []
-        },
-        kevätIII2: {
-          name: "Kevät III/II",
-          items: []
-        },
-        kevätIV2: {
-          name: "Kevät IV/II",
-          items: []
-        },
-        kesäV2: {
-          name: "Kesä V/II",
-          items: []
-        }
-        ,
-        syksyI3: {
-          name: "Syksy I/III",
-          items: [],
-          
-        },
-        syksyII3: {
-          name: "Syksy II/III",
-          items: []
-        },
-        kevätIII3: {
-          name: "Kevät III/III",
-          items: []
-        },
-        kevätIV3: {
-          name: "Kevät IV/III",
-          items: []
-        },
-        kesäV3: {
-          name: "Kesä V/III",
-          items: []
-        }
-      })
+      setQualification(response.data.tutkinto)
+      
+      if(startSeason){
+        setPeriods(periodDataFall(response.data.tutkinnon_osat.tutkinnon_osat, response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708881)))
+      }
+      else{
+        setPeriods(periodDataSpring(response.data.tutkinnon_osat.tutkinnon_osat))
+      }
+        
+      
+      //setPeriods(periodData(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1)))
       } catch (error) {
       if (error.response){
         console.log(error.response.data)
       }
     }
   }
+
  // function to track inital screen orientation when application is opened
   const initialScreenOrientation = () => {
     if(window.matchMedia("(orientation: landscape)").matches)
@@ -140,7 +82,7 @@ const ytoID = [3708881, 3708883, 3708884]
   }
 
   // UseEffect hook to render the screen depending of the initial orientation of the screen
-  // when the app is opened, and to update changes of the screen orientation when app is in use.
+  // when the app is opened, and to update changes of the screen orientation when the device is flipped between portrait and landscape.
   useEffect(() => {
     initialScreenOrientation()
     updateScreenOrientation()
@@ -155,50 +97,75 @@ const ytoID = [3708881, 3708883, 3708884]
     )
   }
 
+  // Two functions to bind for the buttons where user can choose the starting season for studies 
+  const springStart = () => {
+    if(startSeason){
+      if(window.confirm("Haluatko vaihtaa opiskelujen aloitusajankohdan keväälle?"))
+      {
+        setStartSeason(false)
+      }
+    }
+    else{
+      alert("Kevät on jo valittu aloitukseksi.")
+    }
+  }
+
+  const autumnStart = () => {
+    if(!startSeason){
+      if(window.confirm("Haluatko vaihtaa opiskelujen aloitusajankohdan syksylle?"))
+      {
+        setStartSeason(true) 
+      }
+    }
+    else{
+      alert("Syksy on jo valittu aloitukseksi.")
+    }
+  }
+
+  // and useEffect hook to track changes in startSeason value. apiCall function is called
+  useEffect(() => {
+    apiCall()
+  }, [startSeason])
+
   // useEffect hook to check if there is anything saved from the user to local storage, if not the we call
   // the apiCall function.
   useEffect(() => {
-    const data = localStorage.getItem("studiesToPeriods")
-    const data2 = localStorage.getItem("tutkinto")
-    if(data) {
-      setPeriods(JSON.parse(data))
-      setTutkinto(JSON.parse(data2))
+    const periodData = localStorage.getItem("studiesToPeriods")
+    const qualificationData = localStorage.getItem("tutkinto")
+    const spingOrAutumn = localStorage.getItem('season')
+    if(periodData) {
+      setPeriods(JSON.parse(periodData))
+      setQualification(JSON.parse(qualificationData))
+      setStartSeason(JSON.parse(spingOrAutumn))
     }
     else {
       apiCall()
+      setStartSeason(spingOrAutumn)
     }
   }, [])
-
+  
   //useEffect hook to save user choices to local storage, so made choices stay between sessions.
   useEffect(() => {
     localStorage.setItem("studiesToPeriods", JSON.stringify(periods))
-    localStorage.setItem("tutkinto", JSON.stringify(tutkinto))
+    localStorage.setItem("tutkinto", JSON.stringify(qualification))
+    localStorage.setItem('season', JSON.stringify(startSeason))
   })
+  console.log(startSeason)
 
-
-  // if lanscape-variable is true, then the main application is drawn to the screen
+  // If lanscape-variable is true, then the main application is drawn to the screen.
   if(landscape) 
     return(
       <div style={{display: 'flex'}}>
-        <MainLogo tutkinto={tutkinto?.name} allPoints={periods} fromTotal={tutkinto?.total_points}/>
+        <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()}/>
         <StudiesToDrag periods={periods} setPeriods={setPeriods} onclick={handleclick}/>
       </div>
     )
+    // If landscape-variabale is not true, aka mobile device is held in the portrait mode, then we call the "PortraitScreen", which suggests the user 
+    // to turn the mobile device to landscape mode.
   else
     return(
-      <div style={{display: 'flex',backgroundColor: "#b32d84", height: '100vh', width: '100hv', alignItems: 'center'}}>
-        <div style={{textAlign: 'center', marginBottom: '200px'}}>
-        <PortraitLogo/>
-          <div style={{color: 'white', fontSize: '30px', textAlign: 'center', fontFamily: 'monospace'}}>
-          Käännä puhelin vaakatasoon
-          </div>
-        </div>
-      </div>
+      <PortraitScreen/>
     )
-    
-  
-    
-  
-}
+  }
  
 export default OmaHoks;
