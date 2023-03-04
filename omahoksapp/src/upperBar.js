@@ -1,12 +1,14 @@
 import logo from './logo.png'
 import './cssStyles/logoStyle.css'
 
+import { useEffect, useState } from 'react'
+
 // function to update the sum of points in all of the periods
 const AllPoints = (props) => {
   const summa = []
   Object.entries(props).map(([columnId, column]) => {
     column.items.map((tutkinto) => {
-      if (column.id !== 0){
+      if (column.orderNum !== 0){
         return(
           summa.push(tutkinto.points)
           )
@@ -17,18 +19,43 @@ const AllPoints = (props) => {
       summa.reduce((acc, currentValue) => acc + currentValue, 0)
       )
     }
+    
+
 
 // function to draw a bar for the upper edge of the screen, containing "Omahoks" logo, the name of the vocational qualification,
 // sum of all the points of the studies that user has dropped in periods and button to save all the data in PDF-form
 const MainLogo = (props) => {
+
+
+  // "active" useState is for to determine active index of the seasonButtons 
+const [active, setActive] = useState(1)
+const toggleActive = (index) => {
+  setActive(index)
+}
+
+// Two useEffect hooks to save and fetch the active button data from local storage
+useEffect(() => {
+  const buttonData = localStorage.getItem("activeButton")
+  if(buttonData){
+    setActive(JSON.parse(buttonData))
+  }
+  else(
+    localStorage.setItem("activeButton", JSON.stringify(''))
+  )
+}, [])
+
+useEffect(() => {
+  localStorage.setItem("activeButton", JSON.stringify(active))
+},[])
+console.log(active)
     return (
       <div className='upperPinkBar'>
-        <button className='seasonButton' onClick={props.autumn} style={{transform: "translate(500px, 100px)"}}>Syksy</button>
-        <button className='seasonButton' onClick={props.spring} style={{transform: "translate(500px, 100px)"}}>Kevät</button>
-        <button className='pdfButton' style={{transform: "translate(550px, 100px)"}}>Tallenna PDF</button>
+        <button className={active === 1 ? 'seasonButtonActive': 'seasonButtonDeactive'} onClick={() => [toggleActive(1), props.autumn()]} style={{transform: "translate(500px, 100px)"}}>Syksy</button>
+        <button className={active === 2 ? 'seasonButtonActive': 'seasonButtonDeactive'} onClick={() => [toggleActive(2), props.spring()]} style={{transform: "translate(500px, 100px)"}}>Kevät</button>
+        <button className='pdfButton' style={{transform: "translate(550px, 95px)"}}>Tallenna PDF</button>
         <img src={logo} width={60} style={{transform:'translate(-240px, 108px)'}}/>
         <h4 style={{color:'lightGrey', transform: 'translate(75px, 50px)'}}>{props.qualification} {AllPoints(props.allPoints)}/{props.fromTotal} opintopistettä</h4>
-        <h6 style={{color: 'lightGrey', transform: 'translate(515px, -5px)'}}>Opiskelujen aloitus:</h6>
+        <h6 style={{color: 'lightGrey', transform: 'translate(525px, -5px)'}}>Opintojen aloitus:</h6>
         </div>
         )
       }

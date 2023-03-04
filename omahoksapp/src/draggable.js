@@ -7,6 +7,7 @@ import './cssStyles/drag&dropStyle.css'
 //onDragEnd function is essential for defining what happens to the draggable object when
 // it is dropped in to the droppable area.
 const onDragEnd = (result, columns, setColumns) => {
+  vibrate(40)
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -43,6 +44,10 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
+ // function for haptic feedback when button is pressed
+ const vibrate = (ms) => {
+  navigator.vibrate(ms)
+}
 
 // function to update the amount of points in one period when study is dropped in to the said period
 const sumPoints = (props) => {
@@ -60,16 +65,15 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
 
   // toggletab function sets the index of the selected tab for the togglestate variable
   const toggleTab = (index) => {
+    vibrate(40)
     setToggleState(index)
   }
-
+  
   return (
-    <DragDropContext
-        onDragEnd={result => onDragEnd(result, periods, setPeriods)}
-      >
+  <DragDropContext onDragEnd={result => onDragEnd(result, periods, setPeriods)}>
         {/*Inside the DragDropContext we first iterate our main object "periods"*/}
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(column.id === 0)
+        { if(column.orderNum === 0)
         return (
             <div
               className='qualificationUnitsContainer'
@@ -152,7 +156,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
             >
               {/*Inside the tab we iterate our object*/}
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(column.id >= 1 && column.id < 5)
+        { if(column.orderNum >= 1 && column.orderNum < 5)
           return (
             <div
               className='periodContainer'
@@ -231,7 +235,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className={toggleState === 2 ? "content active-content2" : "content"}
             >
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(column.id > 5 && column.id <= 9)
+        { if(column.orderNum > 5 && column.orderNum <= 9)
           return (
             <div
             className='periodContainer'
@@ -310,7 +314,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className={toggleState === 3 ? "content active-content3" : "content"}
             >
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(column.id > 10 && column.id <= 14) 
+        { if(column.orderNum > 10 && column.orderNum <= 14) 
           return (
           <div
             className='periodContainer'
@@ -389,7 +393,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className={toggleState === 4 ? "content active-content4" : "content"}
             >
         {Object.entries(periods).map(([columnId, column], index) => 
-        { if(column.id === 5 || column.id === 10 || column.id === 15)
+        { if(column.orderNum === 5 || column.orderNum === 10 || column.orderNum === 15)
           return (
           <div
             className='periodContainer'

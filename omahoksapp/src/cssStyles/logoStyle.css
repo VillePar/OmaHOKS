@@ -11,19 +11,30 @@
     width: 100px;
     height: 30px;
     border: 2px solid black;
-    border-radius: 5px;
+    border-radius: 10px;
     color: #DCDCDC;
     background-color: #008080;
     z-index: 1;
 } 
 
-.seasonButton{
+.seasonButtonActive{
+    width: 70px;
+    height: 25px;
+    position: relative;
+    border: 2px solid rgb(88, 147, 241);
+    border-radius: 10px;
+    color: #DCDCDC;
+    background-color: #0c0c0c;
+    z-index: 1;
+} 
+
+.seasonButtonDeactive{
     width: 70px;
     height: 25px;
     position: relative;
     border: 2px solid rgb(118, 116, 116);
-    border-radius: 5px;
+    border-radius: 10px;
     color: #DCDCDC;
-    background-color: #0c0c0c;
+    background-color: #383838;
     z-index: 1;
 } 
