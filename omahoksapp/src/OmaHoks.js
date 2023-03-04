@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef} from 'react';
 import axios from 'axios';
 import {MainLogo, PortraitScreen} from './upperBar';
 import StudiesToDrag from './draggable';
-import {periodDataFall, periodDataSpring} from './periodData'
+import {periodDataAutumn, periodDataSpring} from './periodData'
 
 const OmaHoks = () => {
  
@@ -33,7 +33,7 @@ const ytoID = [3708881, 3708883, 3708884]
       setQualification(response.data.tutkinto)
       
       if(startSeason){
-        setPeriods(periodDataFall(response.data.tutkinnon_osat.tutkinnon_osat, response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708881)))
+        setPeriods(periodDataAutumn(response.data.tutkinnon_osat.tutkinnon_osat, response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708881)))
       }
       else{
         setPeriods(periodDataSpring(response.data.tutkinnon_osat.tutkinnon_osat))
@@ -90,34 +90,47 @@ const ytoID = [3708881, 3708883, 3708884]
 
   // simple function for resetbutton, that prompts the user if they really want to reset all of their choices.
   const handleclick = () => {
+    vibrate(50)
     if(window.confirm("Haluatko tyhjä kaikki periodit?"))
     return(
       //if user accepts, then apiCall function is called again, which returns the app for it's original state.
-      apiCall()
+      apiCall(),
+      vibrate(150)
     )
+  }
+
+  // function for haptic feedback when button is pressed (does not work in IOS/Safari)
+  const vibrate = (ms) => {
+    navigator.vibrate(ms)
   }
 
   // Two functions to bind for the buttons where user can choose the starting season for studies 
   const springStart = () => {
     if(startSeason){
+      vibrate(50)
       if(window.confirm("Haluatko vaihtaa opiskelujen aloitusajankohdan keväälle?"))
       {
+        vibrate(150)
         setStartSeason(false)
       }
     }
     else{
+      vibrate(50)
       alert("Kevät on jo valittu aloitukseksi.")
     }
   }
 
   const autumnStart = () => {
+    vibrate(50)
     if(!startSeason){
       if(window.confirm("Haluatko vaihtaa opiskelujen aloitusajankohdan syksylle?"))
       {
         setStartSeason(true) 
+        vibrate(150)
       }
     }
     else{
+      vibrate(50)
       alert("Syksy on jo valittu aloitukseksi.")
     }
   }
