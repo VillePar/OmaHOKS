@@ -47,14 +47,14 @@ const onDragEnd = (result, columns, setColumns) => {
  // function for haptic feedback when button is pressed
  const vibrate = (ms) => {
   navigator.vibrate(ms)
-}
+};
 
 // function to update the amount of points in one period when study is dropped in to the said period
 const sumPoints = (props) => {
   return(
     props.reduce((acc, currentValue) => acc + currentValue.points, 0)
   )
-}
+};
 
 const ytoID = [3708881, 3708883, 3708884]
 
@@ -97,7 +97,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                       >
                         {/*Inside the droppable we iterate all of our list items to be draggable objects*/}
                         {column.items.map((item, index) => {
-                          if(ytoID.indexOf(item.id) === -1)
+                          
                           return (
                             <Draggable
                               key={item.id}
