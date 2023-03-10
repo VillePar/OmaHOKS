@@ -8,7 +8,6 @@ import PDFprint from './printPDF';
 
 const OmaHoks = () => {
 
-  const [arr, setArr] = useState({})
   // useRef for useEffect later in the code to prevent unnecessary use of useEffect hook.
   const firstUpdate = useRef(true)
   
@@ -40,10 +39,6 @@ const OmaHoks = () => {
       setMatem(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708883))
     setYhteisK(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708884))*/}
       setQualification(response.data.tutkinto)
-      setArr({
-        opinnot:{
-          items: response.data.tutkinnon_osat.tutkinnon_osat
-        }})
       if(startSeason){
         setPeriods(periodDataAutumn(response.data.tutkinnon_osat.tutkinnon_osat))
       }
@@ -174,7 +169,7 @@ const OmaHoks = () => {
   if(landscape) 
     return(
       <div style={{display: 'flex'}}>
-        <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()} arr={arr}/>
+        <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()}/>
         <PDFprint dataToPrint={periods}/>
         <StudiesToDrag periods={periods} setPeriods={setPeriods} onclick={handleclick}/>
       </div>
