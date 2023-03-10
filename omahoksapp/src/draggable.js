@@ -122,7 +122,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                   color: "#5A5656",
                                   ...provided.draggableProps.style}}
                                   >
-                                    {item.name} {item.points} op
+                                    {item.name}<br/>{item.points} op
                                   </div>
                                 );
                               }}
@@ -202,7 +202,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                     color: "#5A5656",
                                     ...provided.draggableProps.style}}
                                   >
-                                    {item.name} {item.points} op
+                                    {item.name}<br/>{item.points} op
                                   </div>
                                 );
                               }}
@@ -360,7 +360,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                     color: "#5A5656",
                                     ...provided.draggableProps.style}}
                                   >
-                                    {item.name} {item.points} op
+                                    {item.name}<br/>{item.points} op
                                   </div>
                                 );
                               }}
@@ -439,7 +439,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                   color: "#5A5656",
                                   ...provided.draggableProps.style}}
                                   >
-                                    {item.name} {item.points} op
+                                    {item.name}<br/>{item.points} op
                                   </div>
                                 );
                               }}
