@@ -80,7 +80,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               key={columnId}
               >
               <button className='resetButton' onClick={onclick}>Resetoi</button>
-              {<h2 style={{fontSize: '13px'}}>{column.name}</h2>}
+              {<h2 style={{fontSize: '14px', transform: 'translate(0px, 12px)'}}>{column.name}</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -162,7 +162,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
               className='periodContainer'
               key={columnId}
               >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center', fontSize: '10px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -241,7 +241,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
             className='periodContainer'
             key={columnId}
             >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '10px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -320,7 +320,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
             className='periodContainer'
             key={columnId}
               >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '10px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -399,7 +399,7 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
             className='periodContainer'
             key={columnId}
               >
-              {<h2 style={{textAlign: 'center',fontSize: '9px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
+              {<h2 style={{textAlign: 'center',fontSize: '10px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>}
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {

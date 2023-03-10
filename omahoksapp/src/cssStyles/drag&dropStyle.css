@@ -1,13 +1,15 @@
 .draggableStudy{
     text-align: center;
-    height: 40px;
+    min-height: 50px;
     margin-left: 2%;
     width: 96%;
-    margin-top: 3px;
+    margin-top: 4px;
     font-size: 11px;
-    border: 1px solid #565656;
-    color: rgb(222, 217, 217);
-    font-family: sans-serif;
+    border: 1px solid #636363;
+    color: rgb(255, 255, 255);
+    font-family: Tahoma;
+    border-radius: 4px;
+    box-shadow: 2px 2px 1px #6c6b6b;
 }
 
 .qualificationUnitsContainer{
@@ -32,7 +34,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     border: 1px solid #2c2b2b;
-    width: 130px;
+    width: 150px;
     height: 260px;
 }
 
@@ -41,18 +43,20 @@
     overflow-y: scroll;
     overflow-x: hidden;
     box-shadow: 2px 1px 5px #1b1a1a;
-    width: 130px;
+    width: 150px;
     height: 250px;
     margin-inline: 1%;
-    margin-top: -1%;
+    margin-top: -5%;
+    margin-bottom: -12%;
 }
 
 .resetButton{
-    height: 40px;
+    height: 22px;
     width: 100px;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 2px solid black;
     font-size: 12px;
     color: #DCDCDC;
     background-Color: #008080;
+    position: absolute;
 }
