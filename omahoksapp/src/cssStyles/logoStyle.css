@@ -1,22 +1,13 @@
 .upperPinkBar{
     background-color: #b32d84;
     position: absolute;
-    top: -105px;
+    height: 43px;
+    width: 881px;
     left: 0px;
     right: 0px;
+    top: 0px;
     box-sizing: border-box;
 }
-
-.pdfButton{
-    width: 100px;
-    height: 30px;
-    border: 2px solid black;
-    border-radius: 10px;
-    color: #DCDCDC;
-    background-color: #008080;
-    position: absolute;
-    z-index: 1;
-} 
 
 .seasonButtonActive{
     width: 70px;

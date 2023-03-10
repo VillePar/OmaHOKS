@@ -45,11 +45,11 @@ const MainLogo = (props) => {
 
   return (
     <div className='upperPinkBar'>
-      <button className={activeButton === 1 ? 'seasonButtonActive': 'seasonButtonDeactive'} onClick={() => {if(window.confirm('Haluatko vaihtaa opintojen aloituksen syksylle?'))return[toggleActive(1), props.autumn()]}} style={{transform: "translate(500px, 100px)"}}>Syksy</button>
-      <button className={activeButton === 2 ? 'seasonButtonActive': 'seasonButtonDeactive'} onClick={() => {if(window.confirm('Haluatko vaihtaa opintojen aloituksen keväälle?'))return[toggleActive(2), props.spring()]}} style={{transform: "translate(500px, 100px)"}}>Kevät</button>
-      <img src={logo} width={60} style={{transform:'translate(-130px, 108px)'}}/>
-      <h4 style={{color:'lightGrey', transform: 'translate(75px, 50px)'}}>{props.qualification} {AllPoints(props.allPoints)}/{props.fromTotal} opintopistettä</h4>
-      <h6 style={{color: 'lightGrey', transform: 'translate(525px, -5px)'}}>Opintojen aloitus:</h6>
+      <button className={activeButton === 1 ? 'seasonButtonActive': 'seasonButtonDeactive'} onClick={() => {if(window.confirm('Haluatko vaihtaa opintojen aloituksen syksylle?'))return[toggleActive(1), props.autumn()]}} style={{transform: "translate(500px, -10px)"}}>Syksy</button>
+      <button className={activeButton === 2 ? 'seasonButtonActive': 'seasonButtonDeactive'} onClick={() => {if(window.confirm('Haluatko vaihtaa opintojen aloituksen keväälle?'))return[toggleActive(2), props.spring()]}} style={{transform: "translate(500px, -10px)"}}>Kevät</button>
+      <img src={logo} width={70} style={{transform:'translate(-135px, 0px)'}}/>
+      <h3 style={{color:'lightGrey', transform: 'translate(80px, -60px)'}}>{props.qualification} {AllPoints(props.allPoints)}/{props.fromTotal} opintopistettä</h3>
+      <h5 style={{color: 'lightGrey', transform: 'translate(518px, -115px)', zIndex: 1}}>Opintojen aloitus:</h5>
     </div>
     )
   };
