@@ -46,7 +46,7 @@ const PDFprint = ({dataToPrint}) => {
                 <h2 style={{textAlign: 'center',fontSize: '10px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>
                    {column.items.map((item, index) => (
                     <div className="study" style={item.required ? {backgroundColor: "#4D97E2"}:{backgroundColor: "#CCFFCC",
-                    color: "black",}} key={item.id}>{item.name} {item.points} op</div>
+                    color: "black",}} key={item.id}>{item.name}<br/> {item.points} op</div>
                   ))}
                   </div>
               </div>
@@ -63,7 +63,7 @@ const PDFprint = ({dataToPrint}) => {
                 <h2 style={{textAlign: 'center',fontSize: '10px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>
                    {column.items.map((item, index) => (
                     <div className="study" style={item.required ? {backgroundColor: "#4D97E2"}:{backgroundColor: "#CCFFCC",
-                    color: "black",}} key={item.id}>{item.name} {item.points} op</div>
+                    color: "black",}} key={item.id}>{item.name}<br/> {item.points} ops</div>
                   ))}
                   </div>
               </div>
