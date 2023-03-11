@@ -27,6 +27,7 @@ body {
 .tabs {
   text-align: center;
   width: 100%;
+  height: 27px;
   background: rgba(255, 247, 247, 0.075);
   cursor: pointer;
   border-bottom: 1px solid rgba(0, 0, 0, 0.274);
@@ -53,7 +54,7 @@ body {
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% + 2px);
-  height: 5px;
+  height: 8px;
   background: rgb(88, 147, 241);
 }
 
@@ -73,7 +74,6 @@ button {
   height: fit-content;
   display: none;
   margin-left: -100px;
-  
 }
 .content h2 {
   padding: 0px 0 5px 0px;

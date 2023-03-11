@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useRef, useLayoutEffect} from 'react';
+import {useEffect, useState, useRef} from 'react';
 import axios from 'axios';
-import {MainLogo, PortraitScreen} from './upperBar';
-import StudiesToDrag from './draggable';
-import {periodDataAutumn, periodDataSpring} from './periodData'
-
-import PDFprint from './printPDF';
+import {MainLogo, PortraitScreen} from './components/upperBar';
+import DnD from './components/drag&drop';
+import {periodDataAutumn, periodDataSpring} from './components/periodData'
+import PDFprint from './components/printPDF';
 
 const OmaHoks = () => {
 
@@ -94,7 +93,7 @@ const OmaHoks = () => {
   };
 
   // simple function for resetbutton, that prompts the user if they really want to reset all of their choices.
-  const handleclick = () => {
+  const resetClick = () => {
     vibrate(50)
     if(window.confirm("Haluatko tyhjä kaikki periodit?"))
     return(
@@ -170,8 +169,8 @@ const OmaHoks = () => {
     return(
       <div style={{display: 'flex'}}>
         <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()}/>
-        <PDFprint dataToPrint={periods}/>
-        <StudiesToDrag periods={periods} setPeriods={setPeriods} onclick={handleclick}/>
+        <PDFprint printData={periods} qualification={qualification?.name} fromTotal={qualification?.total_points}/>
+        <DnD periods={periods} setPeriods={setPeriods} onclick={resetClick}/>
       </div>
     )
     // If landscape-variabale is not true, aka mobile device is held in the portrait mode, then we call the "PortraitScreen", which suggests the user 
