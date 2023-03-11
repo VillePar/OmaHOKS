@@ -1,0 +1,85 @@
+import '../cssStyles/printStyles.css';
+
+const sumPoints = (props) => {
+    return(
+      props.reduce((acc, currentValue) => acc + currentValue.points, 0)
+    )
+  };
+
+  const AllPoints = (props) => {
+    const summa = []
+    Object.entries(props).map(([columnId, column]) => {
+      column.items.map((tutkinto) => {
+        if (column.orderNum !== 0 && column.orderNum !== 20){
+          return(
+            summa.push(tutkinto.points)
+            )
+          }
+        })
+      })
+      return (
+        summa.reduce((acc, currentValue) => acc + currentValue, 0)
+        )
+      }; 
+
+const pdfData = (dataToPrint, qualification, fromTotal) => {
+    return (
+        <div className='upperPinkBarPrint'>
+        <img className='logo' src={'/omaHoksLogo.png'}/>
+        <h1 className='title'>{qualification} {AllPoints(dataToPrint)}/{fromTotal} opintopistettä</h1>
+        <h2 style={{transform: 'translate(40%, 0)'}}>Lukuvuosi I</h2>
+        {Object.entries(dataToPrint).map(([columnID, column]) => {
+          if (column.orderNum > 0 && column.orderNum <= 5) 
+          {
+            return (
+            <div key={columnID} className='print-container'>
+              <div className='period' style={column.orderNum === 5 ? {backgroundColor: '#FFFACD'}:{backgroundColor: '#F2F2F2'}}>
+                <h2 style={{textAlign: 'center',fontSize: '16px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>
+                   {column.items.map((item, index) => (
+                    <div className="study" style={item.required ? {backgroundColor: "#4D97E2"}:{backgroundColor: "#CCFFCC",
+                    color: "black",}} key={item.id}>{item.name}<br/> {item.points} op</div>
+                  ))}
+                  </div>
+              </div>
+            )
+          }
+        })}
+        <h2 style={{transform: 'translate(40%, 0)'}}>Lukuvuosi II</h2>
+        {Object.entries(dataToPrint).map(([columnID, column]) => {
+          if (column.orderNum > 5 && column.orderNum < 11) 
+          {
+            return (
+            <div key={columnID} className='print-container'>
+              <div className='period' style={column.orderNum === 10 ? {backgroundColor: '#FFFACD'}:{backgroundColor: '#F2F2F2'}}>
+                <h2 style={{textAlign: 'center',fontSize: '16px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>
+                   {column.items.map((item, index) => (
+                    <div className="study" style={item.required ? {backgroundColor: "#4D97E2"}:{backgroundColor: "#CCFFCC",
+                    color: "black",}} key={item.id}>{item.name}<br/>{item.points} op</div>
+                  ))}
+                  </div>
+              </div>
+            )
+          }
+        })}
+        <h2 style={{transform: 'translate(40%, 0)'}}>Lukuvuosi III</h2>
+        {Object.entries(dataToPrint).map(([columnID, column]) => {
+          if (column.orderNum > 10 && column.orderNum < 19) 
+          {
+            return (
+            <div key={columnID} className='print-container'>
+              <div className='period' style={column.orderNum === 15 ? {backgroundColor: '#FFFACD'}:{backgroundColor: '#F2F2F2'}}>
+                <h2 style={{textAlign: 'center',fontSize: '16px'}}>{column.name}<br/>Periodin opintopisteet  {sumPoints(column.items)} op</h2>
+                   {column.items.map((item, index) => (
+                    <div className="study" style={item.required ? {backgroundColor: "#4D97E2"}:{backgroundColor: "#CCFFCC",
+                    color: "black",}} key={item.id}>{item.name}<br/>{item.points} ops</div>
+                  ))}
+                  </div>
+              </div>
+            )
+          }
+        })}
+        </div>
+    )
+};
+
+export default pdfData;

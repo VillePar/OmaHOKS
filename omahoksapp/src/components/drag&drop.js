@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import "./cssStyles/TabStyle.css"
-import './cssStyles/drag&dropStyle.css'
+import "../cssStyles/TabStyle.css"
+import '../cssStyles/drag&dropStyle.css'
 
 
 //onDragEnd function is essential for defining what happens to the draggable object when
@@ -58,7 +58,7 @@ const sumPoints = (props) => {
 
 const ytoID = [3708881, 3708883, 3708884]
 
-const StudiesToDrag = ({periods, setPeriods, onclick}) => {
+const DnD = ({periods, setPeriods, onclick}) => {
    
   // toggelstate variabale is to keep track that which of the tabs containing periods is selected
   const [toggleState, setToggleState] = useState(1)
@@ -119,7 +119,6 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                   }:{backgroundColor: snapshot.isDragging
                                     ? "#47FF78"
                                     : "#CCFFCC",
-                                  color: "#5A5656",
                                   ...provided.draggableProps.style}}
                                   >
                                     {item.name}<br/>{item.points} op
@@ -199,7 +198,6 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                     }:{backgroundColor: snapshot.isDragging
                                       ? "#47FF78"
                                       : "#CCFFCC",
-                                    color: "#5A5656",
                                     ...provided.draggableProps.style}}
                                   >
                                     {item.name}<br/>{item.points} op
@@ -278,10 +276,9 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                   }:{backgroundColor: snapshot.isDragging
                                     ? "#47FF78"
                                     : "#CCFFCC",
-                                  color: "#5A5656",
                                   ...provided.draggableProps.style}}
                                   >
-                                    {item.name} {item.points} op
+                                    {item.name}<br/>{item.points} op
                                   </div>
                                 );
                               }}
@@ -357,7 +354,6 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                     }:{backgroundColor: snapshot.isDragging
                                       ? "#47FF78"
                                       : "#CCFFCC",
-                                    color: "#5A5656",
                                     ...provided.draggableProps.style}}
                                   >
                                     {item.name}<br/>{item.points} op
@@ -436,7 +432,6 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
                                   }:{backgroundColor: snapshot.isDragging
                                     ? "#47FF78"
                                     : "#CCFFCC",
-                                  color: "#5A5656",
                                   ...provided.draggableProps.style}}
                                   >
                                     {item.name}<br/>{item.points} op
@@ -463,4 +458,4 @@ const StudiesToDrag = ({periods, setPeriods, onclick}) => {
         )
 }
 
-export default StudiesToDrag;
+export default DnD;
