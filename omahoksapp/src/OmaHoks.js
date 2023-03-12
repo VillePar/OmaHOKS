@@ -6,10 +6,11 @@ import {periodDataAutumn, periodDataSpring} from './components/periodData'
 import PDFprint from './components/printPDF';
 import { isMobile } from 'react-device-detect';
 
+
 const OmaHoks = () => {
 
   // useRef for useEffect later in the code to prevent unnecessary use of useEffect hook.
-  const firstUpdate = useRef(true)
+  const firstUpdate = useRef(true);
   
   const [qualification, setQualification] = useState([]);
 
@@ -33,9 +34,9 @@ const OmaHoks = () => {
   // In apicall we use axios-library to get the json data from liiketoiminnan eperusteet
   const apiCall = async () => {
     try {
-      const response = await axios.get('/liiketoimintaData.json')
-      const aot = response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) === -1)
-      const ytoFiltered =  response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) !== -1)
+      const response = await axios.get('/liiketoimintaData.json');
+      const aot = response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) === -1);
+      const ytoFiltered =  response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) !== -1);
       const yot = [] 
       
       ytoFiltered?.map((value) => {
@@ -45,7 +46,7 @@ const OmaHoks = () => {
           yot.push(study)
           )
         }))
-      })
+      });
 
       setQualification(response.data.tutkinto)
       if(startSeason){
@@ -53,7 +54,7 @@ const OmaHoks = () => {
       }
       else{
         setPeriods(periodDataSpring(aot, yot))
-      }
+      };
       //setPeriods(periodData(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1)))
       } catch (error) {
       if (error.response){
@@ -104,40 +105,28 @@ const OmaHoks = () => {
 
   // simple function for resetbutton, that prompts the user if they really want to reset all of their choices.
   const resetClick = () => {
-    vibrate(50)
-    if(window.confirm("Haluatko tyhjä kaikki periodit?"))
+    if(window.confirm("Haluatko tyhjätä kaikki periodit?"))
     return(
       //if user accepts, then apiCall function is called again, which returns the app for it's original state.
-      apiCall(),
-      vibrate(150)
+      apiCall()
     )
-  };
-
-  // function for haptic feedback when button is pressed (does not work in IOS/Safari)
-  const vibrate = (ms) => {
-    navigator.vibrate(ms)
   };
 
   // Two functions to bind for the buttons where user can choose the starting season for studies 
   const springStart = () => {
     if(startSeason){
-      vibrate(150)
       setStartSeason(false)
       }
     else{
-      vibrate(50)
       alert("Kevät on jo valittu aloitukseksi.")
     }
   };
 
   const autumnStart = () => {
-    vibrate(50)
     if(!startSeason){
       setStartSeason(true) 
-      vibrate(150)
-      }
+    }
     else{
-      vibrate(50)
       alert("Syksy on jo valittu aloitukseksi.")
     }
   };
@@ -180,7 +169,7 @@ const OmaHoks = () => {
     // If lanscape-variable is true, then the main application is drawn to the screen.
     if(landscape) 
     return(
-      <div style={{display: 'flex'}}>
+      <div style={{display: 'flex'}} >
         <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()}/>
         <PDFprint printData={periods} qualification={qualification?.name} fromTotal={qualification?.total_points}/>
         <DnD periods={periods} setPeriods={setPeriods} onclick={resetClick}/>

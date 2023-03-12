@@ -11,6 +11,7 @@ const PDFprint = ({printData, qualification, fromTotal}) => {
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: 'OmaHoks',
+    fileName: "my-file.pdf",
   });
 
   return (

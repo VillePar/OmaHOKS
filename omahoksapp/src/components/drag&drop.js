@@ -7,7 +7,7 @@ import '../cssStyles/drag&dropStyle.css'
 //onDragEnd function is essential for defining what happens to the draggable object when
 // it is dropped in to the droppable area.
 const onDragEnd = (result, columns, setColumns) => {
-  vibrate(40)
+  
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -44,11 +44,6 @@ const onDragEnd = (result, columns, setColumns) => {
   }
 };
 
- // function for haptic feedback when button is pressed
- const vibrate = (ms) => {
-  navigator.vibrate(ms)
-};
-
 // function to update the amount of points in one period when study is dropped in to the said period
 const sumPoints = (props) => {
   return(
@@ -56,33 +51,31 @@ const sumPoints = (props) => {
   )
 };
 
-
-
 const DnD = ({periods, setPeriods, onclick}) => {
    
   // toggelstate variabale is to keep track that which of the tabs containing periods is selected
-  const [toggleState, setToggleState] = useState(1)
+  const [toggleState, setToggleState] = useState(1);
 
-  const [toggleStudies, setToggleStudies] = useState(1)
+  const [toggleStudies, setToggleStudies] = useState(1);
 
-  const [activeButton, setActiveButton] = useState(1)
+  const [activeButton, setActiveButton] = useState(1);
 
   const activateButton = (index) => {
-    vibrate(40)
+    
     setActiveButton(index)
-  }
+  };
 
   const toggleButton = (index) => {
-    vibrate(40)
+    
     setToggleStudies(index)
-  }
+  };
 
 
   // toggletab function sets the index of the selected tab for the togglestate variable
   const toggleTab = (index) => {
-    vibrate(40)
+    
     setToggleState(index)
-  }
+  };
   
   return (
   <DragDropContext onDragEnd={result => onDragEnd(result, periods, setPeriods)}>
