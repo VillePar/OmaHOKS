@@ -26,7 +26,7 @@ const pdfData = (dataToPrint, qualification, fromTotal) => {
     return (
         <div className='upperPinkBarPrint'>
         <img className='logo' src={'/omaHoksLogo.png'}/>
-        <h1 className='title'>{qualification} {AllPoints(dataToPrint)}/{fromTotal} opintopistettä</h1>
+        <h1 className='title'>{qualification} | Opintopisteet {AllPoints(dataToPrint)}/{fromTotal}</h1>
         <h2 style={{transform: 'translate(40%, 0)'}}>Lukuvuosi I</h2>
         {Object.entries(dataToPrint).map(([columnID, column]) => {
           if (column.orderNum > 0 && column.orderNum <= 5) 

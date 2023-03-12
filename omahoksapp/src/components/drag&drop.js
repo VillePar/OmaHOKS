@@ -63,6 +63,21 @@ const DnD = ({periods, setPeriods, onclick}) => {
   // toggelstate variabale is to keep track that which of the tabs containing periods is selected
   const [toggleState, setToggleState] = useState(1)
 
+  const [toggleStudies, setToggleStudies] = useState(1)
+
+  const [activeButton, setActiveButton] = useState(1)
+
+  const activateButton = (index) => {
+    vibrate(40)
+    setActiveButton(index)
+  }
+
+  const toggleButton = (index) => {
+    vibrate(40)
+    setToggleStudies(index)
+  }
+
+
   // toggletab function sets the index of the selected tab for the togglestate variable
   const toggleTab = (index) => {
     vibrate(40)
@@ -71,22 +86,25 @@ const DnD = ({periods, setPeriods, onclick}) => {
   
   return (
   <DragDropContext onDragEnd={result => onDragEnd(result, periods, setPeriods)}>
+    <button className={activeButton === 2 ? 'studyButton' : 'nonActiveStudyButton'} style={{marginLeft: '85px'}} onClick={() => [toggleButton(2), activateButton(2)]}>Yhteisopinnot</button>
+    <button className={activeButton === 1 ? 'studyButton' : 'nonActiveStudyButton'} style={{marginLeft: '1px'}} onClick={() => [toggleButton(1), activateButton(1)]}>Ammatilliset</button>
+    <button className='resetButton' onClick={onclick}>Resetoi</button>
         {/*Inside the DragDropContext we first iterate our main object "periods"*/}
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(column.orderNum === 0)
         return (
             <div
-              className='qualificationUnitsContainer'
+              className={toggleStudies === 1 ? 'qualificationUnitsContainer' : 'qualificationHidden'}
               key={columnId}
               >
-              <button className='resetButton' onClick={onclick}>Resetoi</button>
-              {<h2 style={{fontSize: '14px', transform: 'translate(0px, 12px)'}}>{column.name}</h2>}
+              <h5 style={{position: 'absolute', top: '28px', textAlign: 'center'}}>Tutkinnon osat</h5>
+              
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
                     return (
                       <div 
-                      className='qualificationUnits'
+                      className={toggleStudies === 1 ? 'qualificationUnits' : 'qualificationUnitsHidden'}
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                         style={{
@@ -106,7 +124,7 @@ const DnD = ({periods, setPeriods, onclick}) => {
                             >
                               {(provided, snapshot) => {
                                 return (
-                                  <div
+                                  <div 
                                   className='draggableStudy'
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
@@ -137,6 +155,73 @@ const DnD = ({periods, setPeriods, onclick}) => {
               </div>
             </div>
           );
+          
+        })}
+        {Object.entries(periods).map(([columnId, column], index) => 
+        { if(column.orderNum === 20)
+        return (
+            <div
+              className={toggleStudies === 2 ? 'qualificationUnitsContainer' : 'qualificationHidden'}
+              key={columnId}
+              >
+                <h5 style={{position: 'absolute', top: '28px', textAlign: 'center'}}>Tutkinnon osat</h5>
+              <div style={{ margin: 8 }}>
+                <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
+                  {(provided, snapshot) => {
+                    return (
+                      <div 
+                      className={toggleStudies === 2 ? 'qualificationUnits' : 'qualificationUnitsHidden'}
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        style={{
+                          background: snapshot.isDraggingOver
+                            ? "#666666"
+                            : "#F2F2F2",
+                         }}
+                      >
+                        {/*Inside the droppable we iterate all of our list items to be draggable objects*/}
+                        {column.items.map((item, index) => {
+                          
+                          return (
+                            <Draggable
+                              key={item.id}
+                              draggableId={item.id.toString()}
+                              index={index}
+                            >
+                              {(provided, snapshot) => {
+                                return (
+                                  <div 
+                                  className='draggableStudy'
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  style={item.required ? {
+                                    backgroundColor: snapshot.isDragging
+                                      ? "#6EE8FF"
+                                      : "#4D97E2",
+                                    ...provided.draggableProps.style
+                                  }:{backgroundColor: snapshot.isDragging
+                                    ? "#47FF78"
+                                    : "#CCFFCC",
+                                  ...provided.draggableProps.style}}
+                                  >
+                                    {item.name}<br/>{item.points} op
+                                  </div>
+                                );
+                              }}
+                            </Draggable>
+                            );
+                            })}
+                        {provided.placeholder}
+                      </div>
+                    );
+                  }}
+                </Droppable>
+                
+              </div>
+            </div>
+          );
+          
         })}
         {/*Each school year is wrapped around tab, this tab-wrapper is duplicated for 
         each of the years*/}

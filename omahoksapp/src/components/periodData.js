@@ -1,10 +1,15 @@
 const periodDataAutumn = (aot, yot) => {
     return ( {
-    opinnot: {
+    aOpinnot: {
         orderNum: 0,
         name: "Tutkinnon osat",
         items: aot
     },
+    yOpinnot: {
+      orderNum: 20,
+      name: "Tutkinnon osat",
+      items: yot
+  },
     syksyI: {
       orderNum: 1,
       name: "Syksy I",
@@ -88,13 +93,18 @@ const periodDataAutumn = (aot, yot) => {
 })
 }
 
-const periodDataSpring = (props) => {
+const periodDataSpring = (aot, yot) => {
   return ( {
-  opinnot: {
+    aOpinnot: {
       orderNum: 0,
       name: "Tutkinnon osat",
-      items: props
+      items: aot
   },
+  yOpinnot: {
+    orderNum: 20,
+    name: "Tutkinnon osat",
+    items: yot
+},
   kevatI: {
     orderNum: 1,
     name: "Kevät I",
