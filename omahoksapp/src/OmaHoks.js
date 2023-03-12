@@ -4,6 +4,7 @@ import {MainLogo, PortraitScreen} from './components/upperBar';
 import DnD from './components/drag&drop';
 import {periodDataAutumn, periodDataSpring} from './components/periodData'
 import PDFprint from './components/printPDF';
+import { isMobile } from 'react-device-detect';
 
 const OmaHoks = () => {
 
@@ -26,7 +27,7 @@ const OmaHoks = () => {
   // Later in the code we will give it a boolean value depending on the screen orientation.
   const [landscape, setLandscape] = useState();
 
-  // for now there is no use for ytoID
+  // this a
   const ytoID = [3708881, 3708883, 3708884];
   
   // In apicall we use axios-library to get the json data from liiketoiminnan eperusteet
@@ -171,21 +172,30 @@ const OmaHoks = () => {
     localStorage.setItem('season', JSON.stringify(startSeason))
   });
   
-  // If lanscape-variable is true, then the main application is drawn to the screen.
-  if(landscape) 
+  // If device is detected to be a mobile device, then the application is rendered.
+  if(isMobile) {
+    // If lanscape-variable is true, then the main application is drawn to the screen.
+    if(landscape) 
     return(
       <div style={{display: 'flex'}}>
         <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()}/>
         <PDFprint printData={periods} qualification={qualification?.name} fromTotal={qualification?.total_points}/>
         <DnD periods={periods} setPeriods={setPeriods} onclick={resetClick}/>
       </div>
-    )
+      )
     // If landscape-variabale is not true, aka mobile device is held in the portrait mode, then we call the "PortraitScreen", which suggests the user 
     // to turn the mobile device to landscape mode.
-  else
+    else
     return(
-      <PortraitScreen/>
+    <PortraitScreen/>
     )
   };
+  if(!isMobile){
+    return(
+      <h1 style={{textAlign: 'center', color: 'white'}}>Sorry but desktop device is not supported, mobile only!</h1>
+    )
+  };
+ 
+};
  
 export default OmaHoks;
