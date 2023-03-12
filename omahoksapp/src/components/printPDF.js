@@ -21,7 +21,7 @@ const PDFprint = ({printData, qualification, fromTotal}) => {
       {pdfData(printData, qualification, fromTotal)}
       </div>
       </div>
-      <button className="pdfButton" style={{transform: "translate(750px, 0px)"}} onClick={() => [handlePrint(), navigator.vibrate(100)]}>Tallenna PDF</button>
+      <button className="pdfButton" style={{transform: "translate(750px, 0px)"}} onClick={() => handlePrint()}>Tallenna PDF</button>
     </>
   )
 };
