@@ -33,16 +33,22 @@ const OmaHoks = () => {
   const apiCall = async () => {
     try {
       const response = await axios.get('/liiketoimintaData.json')
-      // for now these setStates are not in use.
-      {/*setViestiJaVuorov(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708881))
-      setMatem(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708883))
-    setYhteisK(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => osa.required && osa.id === 3708884))*/}
+      const aot = response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) === -1)
+      const ytoFiltered =  response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) !== -1)
+      const yot = [] 
+      
+      ytoFiltered?.map((value) => {
+        value.to_children?.map((study) => {
+          yot.push(study)
+        })
+      })
+
       setQualification(response.data.tutkinto)
       if(startSeason){
-        setPeriods(periodDataAutumn(response.data.tutkinnon_osat.tutkinnon_osat))
+        setPeriods(periodDataAutumn(aot, yot))
       }
       else{
-        setPeriods(periodDataSpring(response.data.tutkinnon_osat.tutkinnon_osat))
+        setPeriods(periodDataSpring(aot, yot))
       }
       //setPeriods(periodData(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1)))
       } catch (error) {
@@ -157,6 +163,7 @@ const OmaHoks = () => {
     apiCall()
   },[startSeason]);
 
+ 
   //useEffect hook to save user choices to local storage, so made choices stay between sessions.
   useEffect(() => {
     localStorage.setItem("studiesToPeriods", JSON.stringify(periods))

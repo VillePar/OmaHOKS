@@ -20,6 +20,8 @@
     background-Color: #E0E0E0;
     border: 1px solid lightGrey;
     height: 325px;
+    width: 170px;
+    z-index: 1;
 }
 
 .periodContainer{
@@ -29,6 +31,10 @@
     margin-top: -25px;
 }
 
+.qualificationHidden{
+    display: none;
+}
+
 .qualificationUnits{
     align-items: center;
     overflow-y: scroll;
@@ -36,6 +42,12 @@
     border: 1px solid #2c2b2b;
     width: 150px;
     height: 275px;
+    margin-top: 40px;
+    position: relative;
+}
+
+.qualificationUnitsHidden{
+    display: none;
 }
 
 .droppablePeriod{
@@ -51,12 +63,49 @@
 }
 
 .resetButton{
-    height: 22px;
+    height: 30px;
     width: 100px;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 2px solid black;
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: Tahoma;
     color: #DCDCDC;
     background-Color: #008080;
     position: absolute;
+    left: 758px;
+    top: 45px;
+    z-index: 3;
+}
+
+.studyButton{
+    height: 30px;
+    width: 84px;
+    border: 1px solid black;
+    border-top: 5px solid rgb(59, 134, 255);
+    font-size: 11px;
+    color: #000000;
+    font-family: Tahoma;
+    font-weight: bold;
+    background-Color: #ffffff;
+    position: absolute;
+    margin-top: 59px;
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.nonActiveStudyButton{
+    height: 30px;
+    width: 84px;
+    border: 1px solid rgba(0, 0, 0, 0.608);
+    border-top: 5px solid rgb(75, 75, 75);
+    font-size: 11px;
+    color: #000000af;
+    font-family: Tahoma;
+    font-weight: bold;
+    background-Color: rgba(221, 221, 221, 0.616);
+    position: absolute;
+    margin-top: 59px;
+    border-radius: 4px;
+    z-index: 2;
 }
