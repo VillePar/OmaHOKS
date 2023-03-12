@@ -56,7 +56,7 @@ const sumPoints = (props) => {
   )
 };
 
-const ytoID = [3708881, 3708883, 3708884]
+
 
 const DnD = ({periods, setPeriods, onclick}) => {
    

@@ -39,9 +39,12 @@ const OmaHoks = () => {
       const yot = [] 
       
       ytoFiltered?.map((value) => {
+        return(
         value.to_children?.map((study) => {
+          return(
           yot.push(study)
-        })
+          )
+        }))
       })
 
       setQualification(response.data.tutkinto)
