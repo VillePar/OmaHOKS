@@ -53,7 +53,8 @@ const sumPoints = (props) => {
 
 const DnD = ({periods, setPeriods, onclick}) => {
    
-  // toggelstate variabale is to keep track that which of the tabs containing periods is selected
+  // All three of these useStates and function bind to them are used
+  // to toggle active buttons/tab on button press.
   const [toggleState, setToggleState] = useState(1);
 
   const [toggleStudies, setToggleStudies] = useState(1);
@@ -61,19 +62,14 @@ const DnD = ({periods, setPeriods, onclick}) => {
   const [activeButton, setActiveButton] = useState(1);
 
   const activateButton = (index) => {
-    
     setActiveButton(index)
   };
 
   const toggleButton = (index) => {
-    
     setToggleStudies(index)
   };
 
-
-  // toggletab function sets the index of the selected tab for the togglestate variable
   const toggleTab = (index) => {
-    
     setToggleState(index)
   };
   
@@ -81,7 +77,7 @@ const DnD = ({periods, setPeriods, onclick}) => {
   <DragDropContext onDragEnd={result => onDragEnd(result, periods, setPeriods)}>
     <button className={activeButton === 2 ? 'studyButton' : 'nonActiveStudyButton'} style={{marginLeft: '85px'}} onClick={() => [toggleButton(2), activateButton(2)]}>Yhteisopinnot</button>
     <button className={activeButton === 1 ? 'studyButton' : 'nonActiveStudyButton'} style={{marginLeft: '1px'}} onClick={() => [toggleButton(1), activateButton(1)]}>Ammatilliset</button>
-    <button className='resetButton' onClick={onclick}>Resetoi</button>
+    <button className='resetButton' style={{transform: 'translate(750px, 45px)'}} onClick={onclick}>Resetoi</button>
         {/*Inside the DragDropContext we first iterate our main object "periods"*/}
         {Object.entries(periods).map(([columnId, column], index) => 
         { if(column.orderNum === 0)
@@ -90,7 +86,7 @@ const DnD = ({periods, setPeriods, onclick}) => {
               className={toggleStudies === 1 ? 'qualificationUnitsContainer' : 'qualificationHidden'}
               key={columnId}
               >
-              <h5 style={{position: 'absolute', top: '28px', textAlign: 'center'}}>Tutkinnon osat</h5>
+              <h5 style={{position: 'absolute', textAlign: 'center', transform: 'translate(0px, -20px)'}}>Tutkinnon osat</h5>
               
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
@@ -157,7 +153,7 @@ const DnD = ({periods, setPeriods, onclick}) => {
               className={toggleStudies === 2 ? 'qualificationUnitsContainer' : 'qualificationHidden'}
               key={columnId}
               >
-                <h5 style={{position: 'absolute', top: '28px', textAlign: 'center'}}>Tutkinnon osat</h5>
+                <h5 style={{position: 'absolute', textAlign: 'center', transform: 'translate(0px, -20px)'}}>Tutkinnon osat</h5>
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {

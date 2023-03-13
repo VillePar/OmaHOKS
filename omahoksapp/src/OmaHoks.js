@@ -5,6 +5,7 @@ import DnD from './components/drag&drop';
 import {periodDataAutumn, periodDataSpring} from './components/periodData'
 import PDFprint from './components/printPDF';
 import { isMobile } from 'react-device-detect';
+import './cssStyles/body.css'
 
 
 const OmaHoks = () => {
@@ -169,7 +170,7 @@ const OmaHoks = () => {
     // If lanscape-variable is true, then the main application is drawn to the screen.
     if(landscape) 
     return(
-      <div style={{display: 'flex'}} >
+      <div className='full-screen' >
         <MainLogo qualification={qualification?.name} allPoints={periods} fromTotal={qualification?.total_points} spring={() => springStart()} autumn={() => autumnStart()}/>
         <PDFprint printData={periods} qualification={qualification?.name} fromTotal={qualification?.total_points}/>
         <DnD periods={periods} setPeriods={setPeriods} onclick={resetClick}/>
@@ -184,7 +185,7 @@ const OmaHoks = () => {
   };
   if(!isMobile){
     return(
-      <h1 style={{textAlign: 'center', color: 'white'}}>Sorry but desktop device is not supported, mobile only!</h1>
+      <h1 style={{textAlign: 'center', color: 'white', marginTop: '100px'}}>Sorry but desktop device is not supported, mobile only!</h1>
     )
   };
  

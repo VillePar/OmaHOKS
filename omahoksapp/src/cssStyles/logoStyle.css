@@ -1,13 +1,11 @@
 .upperPinkBar{
     background-color: #b32d84;
     position: absolute;
-    height: 77px;
-    width: 875px;
-    left: 8px;
-    right: 0px;
-    top: 0px;
-    box-sizing: border-box;
+    height: 79px;
+    min-width: 875px;
 }
+
+
 
 .seasonButtonActive{
     width: 70px;
