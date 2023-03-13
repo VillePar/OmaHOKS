@@ -4,10 +4,6 @@
   padding: 0;
 }
 
-body {
-  background: #3f3f3f;
-}
-
 .container {
   display: flex;
   flex-direction: column;
@@ -15,7 +11,7 @@ body {
   width: 120px;
   height: fit-content;
   background: #f1f1f1;
-  margin-top: 40px;
+  margin-top: 50px;
   word-break: break-all;
   border: 1px solid rgba(87, 84, 84, 0.274);
   border-radius: 2px;
@@ -24,6 +20,7 @@ body {
 .bloc-tabs {
   display: block;
 }
+
 .tabs {
   text-align: center;
   width: 100%;
@@ -58,11 +55,8 @@ body {
   background: rgb(88, 147, 241);
 }
 
-
-
 button {
   border: none;
-  
 }
 .content-tabs {
   flex-grow : 1;
