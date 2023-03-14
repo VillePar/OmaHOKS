@@ -84,14 +84,7 @@ const OmaHoks = () => {
       })
   };
 
-  // UseEffect hook to render the screen depending of the initial orientation of the screen
-  // when the app is opened, and to update changes of the screen orientation when the device is flipped between portrait and landscape.
-  useEffect(() => {
-    initialScreenOrientation()
-    updateScreenOrientation()
-  });
-
-  // function to track mobile devices screen orientation changes to update the landscape-variables boolean value
+ // function to track mobile devices screen orientation changes to update the landscape-variables boolean value
   const updateScreenOrientation = () => {
     window.addEventListener('orientationchange', () => {
       if(window.matchMedia("(orientation: landscape)").matches)
@@ -103,6 +96,13 @@ const OmaHoks = () => {
       )
     })
   };
+
+   // UseEffect hook to render the screen depending of the initial orientation of the screen
+  // when the app is opened, and to update changes of the screen orientation when the device is flipped between portrait and landscape.
+  useEffect(() => {
+    initialScreenOrientation()
+    updateScreenOrientation()
+  });
 
   // simple function for resetbutton, that prompts the user if they really want to reset all of their choices.
   const resetClick = () => {
@@ -131,6 +131,7 @@ const OmaHoks = () => {
       alert("Syksy on jo valittu aloitukseksi.")
     }
   };
+
    // useEffect hook to check if there is anything saved from the user to local storage, if not the we call
   // the apiCall function.
   useEffect(() => {
@@ -147,7 +148,8 @@ const OmaHoks = () => {
     }
   }, []);
 
-  // and useEffect hook to track changes in startSeason value. apiCall function is called
+  // and useEffect hook to track changes in startSeason value. apiCall function is called when startSeason variable is changed
+  // to re-render the periods on screen. useRef firstUpdate.current is used to prevent the useEffect hook from infinite re-rendering.
   useEffect(() => {
     localStorage.setItem('season', JSON.stringify(startSeason))
     if(firstUpdate.current){
@@ -185,7 +187,7 @@ const OmaHoks = () => {
   };
   if(!isMobile){
     return(
-      <h1 style={{textAlign: 'center', color: 'white', marginTop: '100px'}}>Sorry but desktop device is not supported, mobile only!</h1>
+      <h1 style={{textAlign: 'center', color: 'white', marginTop: '200px'}}>Sorry but desktop device is not supported, mobile only!</h1>
     )
   };
  
