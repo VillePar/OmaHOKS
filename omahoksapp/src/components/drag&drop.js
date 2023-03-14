@@ -7,7 +7,6 @@ import '../cssStyles/drag&dropStyle.css'
 //onDragEnd function is essential for defining what happens to the draggable object when
 // it is dropped in to the droppable area.
 const onDragEnd = (result, columns, setColumns) => {
-  
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -83,11 +82,11 @@ const DnD = ({periods, setPeriods, onclick}) => {
         { if(column.orderNum === 0)
         return (
             <div
+              // toggleStudies hides or shows the "ammatilliset opinnot" depending on the value of toggleStudies
               className={toggleStudies === 1 ? 'qualificationUnitsContainer' : 'qualificationHidden'}
               key={columnId}
               >
               <h5 style={{position: 'absolute', textAlign: 'center', transform: 'translate(0px, -20px)'}}>Tutkinnon osat</h5>
-              
               <div style={{ margin: 8 }}>
                 <Droppable droppableId={columnId} key={columnId} isDropDisabled={false}>
                   {(provided, snapshot) => {
@@ -150,6 +149,7 @@ const DnD = ({periods, setPeriods, onclick}) => {
         { if(column.orderNum === 20)
         return (
             <div
+              // toggleStudies hides or shows the "yhteisopinnot" depending on the value of toggleStudies
               className={toggleStudies === 2 ? 'qualificationUnitsContainer' : 'qualificationHidden'}
               key={columnId}
               >

@@ -1,18 +1,23 @@
+// We have two different objects, periodDataAutumn and periodDataSpring. One of these two is called to use in OmaHoks.js
+// depending if user chooses their studies starting period to be spring or autumn.
 const periodDataAutumn = (aot, yot) => {
     return ( {
     aOpinnot: {
         orderNum: 0,
         name: "Tutkinnon osat",
+        // First object uses argument 'aot', here we parse the 'ammatilliset tutkinnonosat' of the incoming JSON.data.
         items: aot
     },
     yOpinnot: {
       orderNum: 20,
       name: "Tutkinnon osat",
+      // And to yot we parse the 'yhteisopinnot' portion of the JSON.data.
       items: yot
   },
     syksyI: {
       orderNum: 1,
       name: "Syksy I",
+      // Rest of the objects have empty array, which is rendered as periods, and where the draggable studies from aot or yot can be dropped and spliced.
       items: [],
       
     },
