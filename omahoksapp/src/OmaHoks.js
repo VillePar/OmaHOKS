@@ -29,15 +29,18 @@ const OmaHoks = () => {
   // Later in the code we will give it a boolean value depending on the screen orientation.
   const [landscape, setLandscape] = useState();
 
-  // this a
+  // this array contains id numbers of all the 'yhteisopinnot' from liiketoiminnan ePerusteet API.
   const ytoID = [3708881, 3708883, 3708884];
   
   // In apicall we use axios-library to get the json data from liiketoiminnan eperusteet
   const apiCall = async () => {
     try {
       const response = await axios.get('/liiketoimintaData.json');
+      // firts we filter the 'ammatilliset tutkinnonosat' by filtering out the id numbers contained in ytoID array.
       const aot = response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) === -1);
+      // and then we filter the ones with matching id from ytoID
       const ytoFiltered =  response.data.tutkinnon_osat.tutkinnon_osat.filter(part => ytoID.indexOf(part.id) !== -1);
+      // Because 'yhteisopinnot' are so deep in JSON.data, we have to map the ytoFiltered and push the values from there in to empty 'yot' array.
       const yot = [] 
       
       ytoFiltered?.map((value) => {
@@ -50,13 +53,14 @@ const OmaHoks = () => {
       });
 
       setQualification(response.data.tutkinto)
+      // if startseason is true, we use the useState hook to fill the startSeason and periods are rendered on screen with autumn as starting point for the studies
       if(startSeason){
         setPeriods(periodDataAutumn(aot, yot))
       }
+      // and if startSeason is not true, then we use she spring layout for the periods
       else{
         setPeriods(periodDataSpring(aot, yot))
       };
-      //setPeriods(periodData(response.data.tutkinnon_osat.tutkinnon_osat.filter(osa => ytoID.indexOf(osa.id) === -1)))
       } catch (error) {
       if (error.response){
         console.log(error.response.data)
@@ -136,7 +140,7 @@ const OmaHoks = () => {
   // the apiCall function.
   useEffect(() => {
     const periodData = localStorage.getItem("studiesToPeriods")
-    const qualificationData = localStorage.getItem("tutkinto")
+    const qualificationData = localStorage.getItem("qualification")
     const springOrAutumn = localStorage.getItem("season")
     if(periodData && qualificationData) {
       setPeriods(JSON.parse(periodData))
@@ -163,7 +167,7 @@ const OmaHoks = () => {
   //useEffect hook to save user choices to local storage, so made choices stay between sessions.
   useEffect(() => {
     localStorage.setItem("studiesToPeriods", JSON.stringify(periods))
-    localStorage.setItem("tutkinto", JSON.stringify(qualification))
+    localStorage.setItem("qualification", JSON.stringify(qualification))
     localStorage.setItem('season', JSON.stringify(startSeason))
   });
   
