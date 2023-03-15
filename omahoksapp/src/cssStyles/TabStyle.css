@@ -40,7 +40,7 @@
   color: #2a2a2a;
   font-size: large;
   background: white;
-  border-bottom: -0px solid transparent;
+  border-bottom: 0px solid transparent;
 }
 
 .active-tabs::before {
