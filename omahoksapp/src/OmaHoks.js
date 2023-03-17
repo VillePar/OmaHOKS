@@ -191,7 +191,7 @@ const OmaHoks = () => {
   };
   if(!isMobile){
     return(
-      <h1 style={{textAlign: 'center', color: 'white', marginTop: '200px'}}>Sorry but desktop device is not supported, mobile only!</h1>
+      <h1 style={{textAlign: 'center', color: 'black', marginTop: '200px'}}>Sorry but desktop device is not supported, mobile only!</h1>
     )
   };
  
