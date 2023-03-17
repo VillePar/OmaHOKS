@@ -44,7 +44,7 @@
     border: 1px solid #2c2b2b;
     background-color: #ffffff;
     width: 150px;
-    height: 285px;
+    height: 280px;
     margin-top: 40px;
     position: relative;
     border-top: 0px solid transparent;
@@ -85,7 +85,7 @@
     width: 84px;
     
     border: 2px solid rgb(59, 134, 255);
-    border-bottom: 0px solid transparent;
+
     font-size: 11px;
     color: #000000;
     font-family: Tahoma;
@@ -101,7 +101,6 @@
     height: 31px;
     width: 84px;
     border: 2px solid rgb(118, 116, 116);
-    border-bottom: 0px solid transparent;
     font-size: 11px;
     color: #DCDCDC;
     font-family: Tahoma;
